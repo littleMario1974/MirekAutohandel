@@ -14,11 +14,46 @@ public class Main {
                 lastInput = readInput(bufferedReader);
                 //namierz opcję i wykonaj obliczenia pętlą switch
 
-
-                
+                switch (lastInput) {
+                    case "1":
+                        System.out.println("Baza samochodów do kupienia");
+                        break;
+                    case "2":
+                        System.out.println("Kup samochód");
+                        break;
+                    case "3":
+                        System.out.println("Baza posiadanych samochodów");
+                        break;
+                    case "4":
+                        System.out.println("Naprawa samochodów");
+                        break;
+                    case "5":
+                        System.out.println("Potencjalni klienci");
+                        break;
+                    case "6":
+                        System.out.println("Sprzedaż samochodu");
+                        break;
+                    case "7":
+                        System.out.println("Kup reklamę");
+                        break;
+                    case "8":
+                        System.out.println("Stan konta");
+                        break;
+                    case "9":
+                        System.out.println("Historia transakcji");
+                        break;
+                    case "10":
+                        System.out.println("Historia naprawy samochodu");
+                        break;
+                    case "11":
+                        System.out.println("Suma kosztów napraw i mycia samochodu");
+                        break;
+                    default:
+                        System.out.println("Podałeś niewłaściwą opcję");
+                }
             } while (!lastInput.equalsIgnoreCase("x"));
         }
-        System.out.println("Do widzenia...");
+        //System.out.println("Do widzenia...");
     }
 
     Double cash = 50000.0; // początkowy zasób gotówki

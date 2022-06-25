@@ -8,11 +8,14 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Main {
+
+
     public static void main(String[] args) throws IOException {
         String lastInput = "";
         try (InputStreamReader isr = new InputStreamReader(System.in);
              BufferedReader bufferedReader = new BufferedReader(isr)) {
 
+            Double cash = 5000.0; // początkowy zasób gotówki;
             CarDb dealers = new CarDb();
 
 
@@ -49,6 +52,7 @@ public class Main {
                         break;
                     case "8":
                         System.out.println("Stan konta");
+                        System.out.println("Masz na koncie " + cash + " zł");
                         break;
                     case "9":
                         System.out.println("Historia transakcji");
@@ -67,7 +71,6 @@ public class Main {
         //System.out.println("Do widzenia...");
     }
 
-    Double cash = 50000.0; // początkowy zasób gotówki
 
     Mechanic janusz = new Mechanic("Janusz", 0, 0, 50);
     Mechanic marian = new Mechanic("Marian", 10, 0, 30);

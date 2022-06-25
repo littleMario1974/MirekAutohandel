@@ -20,10 +20,6 @@ public class Main {
                 switch (lastInput) {
                     case "1":
                         System.out.println("Baza samochodów do kupienia");
-                    for (int i = 0; i < 15; i++) {
-
-
-                    }
                     break;
                     case "2":
                         System.out.println("Kup samochód");

@@ -18,6 +18,13 @@ public class Main {
         System.out.println("Do widzenia...");
     }
 
+    Double cash = 50000.0; // początkowy zasób gotówki
+
+    Mechanic janusz = new Mechanic("Janusz", 0, 0);
+    Mechanic marian = new Mechanic("Marian", 10, 0);
+    Mechanic adrian = new Mechanic("Adrian", 20, 2);
+
+
     private static String readInput(BufferedReader bufferedReader) throws IOException {
 
         String read = bufferedReader.readLine();

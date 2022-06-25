@@ -6,6 +6,24 @@ public class Car {
     String brand;
     long mileage;
     String color;
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "wartość=" + value +
+                ", marka='" + brand + '\'' +
+                ", przebieg=" + mileage +
+                ", kolor='" + color + '\'' +
+                ", segment='" + segment + '\'' +
+                ", przestrzeń ładunkowa=" + capacity +
+                ", naprawa hamulców=" + brakes +
+                ", naprawa zawieszenia=" + suspension +
+                ", naprawa silnika=" + engine +
+                ", naprawa karoserii=" + body +
+                ", naprawa skrzyni biegów=" + gearbox +
+                '}';
+    }
+
     String segment;
     long capacity;
 
@@ -15,6 +33,10 @@ public class Car {
     boolean engine;
     boolean body;
     boolean gearbox;
+
+    public Car() {
+
+    }
 
     public double getValue() {
         return value;

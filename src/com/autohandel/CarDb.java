@@ -6,6 +6,9 @@ import java.util.Random;
 
 public class CarDb {
     List<Car> carsForSale;
+
+
+
     public CarDb(){
         this.carsForSale = generateCarsForSale();
     }
@@ -84,5 +87,4 @@ public class CarDb {
         } return result;
     }
 
-    //print content
 }

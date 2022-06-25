@@ -12,6 +12,10 @@ public class Main {
         String lastInput = "";
         try (InputStreamReader isr = new InputStreamReader(System.in);
              BufferedReader bufferedReader = new BufferedReader(isr)) {
+
+            CarDb dealers = new CarDb();
+
+
             do {
                 System.out.println(printMenu());
                 lastInput = readInput(bufferedReader);
@@ -20,7 +24,11 @@ public class Main {
                 switch (lastInput) {
                     case "1":
                         System.out.println("Baza samochodów do kupienia");
-                    break;
+                        System.out.println(dealers.carsForSale);
+
+
+
+                        break;
                     case "2":
                         System.out.println("Kup samochód");
                         break;
@@ -88,10 +96,6 @@ public class Main {
                 11. Sprawdź sumę kosztów napraw i mycia dla każdego z posiadanych pojazdów
                  Naciśnij x aby wyjść.""";
     }
-
-    
-    
-
 
 
 }

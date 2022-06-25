@@ -3,6 +3,9 @@ package com.autohandel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -17,7 +20,11 @@ public class Main {
                 switch (lastInput) {
                     case "1":
                         System.out.println("Baza samochodów do kupienia");
-                        break;
+                    for (int i = 0; i < 15; i++) {
+
+
+                    }
+                    break;
                     case "2":
                         System.out.println("Kup samochód");
                         break;

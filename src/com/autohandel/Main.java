@@ -13,6 +13,9 @@ public class Main {
                 System.out.println(printMenu());
                 lastInput = readInput(bufferedReader);
                 //namierz opcję i wykonaj obliczenia pętlą switch
+
+
+                
             } while (!lastInput.equalsIgnoreCase("x"));
         }
         System.out.println("Do widzenia...");
@@ -20,9 +23,9 @@ public class Main {
 
     Double cash = 50000.0; // początkowy zasób gotówki
 
-    Mechanic janusz = new Mechanic("Janusz", 0, 0);
-    Mechanic marian = new Mechanic("Marian", 10, 0);
-    Mechanic adrian = new Mechanic("Adrian", 20, 2);
+    Mechanic janusz = new Mechanic("Janusz", 0, 0, 50);
+    Mechanic marian = new Mechanic("Marian", 10, 0, 30);
+    Mechanic adrian = new Mechanic("Adrian", 20, 2, 10);
 
 
     private static String readInput(BufferedReader bufferedReader) throws IOException {
@@ -47,4 +50,10 @@ public class Main {
                 11. Sprawdź sumę kosztów napraw i mycia dla każdego z posiadanych pojazdów
                  Naciśnij x aby wyjść.""";
     }
+
+    
+    
+
+
+
 }

@@ -6,6 +6,15 @@ public class Car {
     String brand;
     long mileage;
     String color;
+    String segment;
+    long capacity;
+
+    //maintainable
+    boolean brakes;
+    boolean suspension;
+    boolean engine;
+    boolean body;
+    boolean gearbox;
 
     @Override
     public String toString() {
@@ -24,15 +33,7 @@ public class Car {
                 '}';
     }
 
-    String segment;
-    long capacity;
 
-    //maintainable
-    boolean brakes;
-    boolean suspension;
-    boolean engine;
-    boolean body;
-    boolean gearbox;
 
     public Car() {
 

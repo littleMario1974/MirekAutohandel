@@ -17,7 +17,7 @@ public class Main {
 
             Double cash = 5000.0; // początkowy zasób gotówki;
             CarDb dealers = new CarDb();
-
+            CustomerDb potentialCustomers = new CustomerDb();
 
             do {
                 System.out.println(printMenu());
@@ -43,6 +43,8 @@ public class Main {
                         break;
                     case "5":
                         System.out.println("Potencjalni klienci");
+                        System.out.println(potentialCustomers.customers);
+
                         break;
                     case "6":
                         System.out.println("Sprzedaż samochodu");

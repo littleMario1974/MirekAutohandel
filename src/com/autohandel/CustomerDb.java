@@ -5,12 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 public class CustomerDb {
-
+    boolean acceptsBroken = true;
     List<Customer> customers;
 
-    public CustomerDb() {
-        this.customers = generateCustomers();
-    }
+    public CustomerDb() { this.customers = generateCustomers(); }
 
     private List<Customer> generateCustomers() {
         List<Customer> result = new ArrayList<>();
@@ -19,13 +17,12 @@ public class CustomerDb {
         List<String> brands = List.of("Audi", "Mercedes", "Fiat", "Porsche", "Volkswagen", "BMW", "Citroen", "Opel", "Peugeot", "Dacia", "Hyundai", "Mazda");
 
         Random rand = new Random();
-        int a = rand.nextInt(6); // losowanie prawdopodobieństwa akceptacji popsutego samochodu
-        if (a == 6) {
-            boolean acceptsBroken = true;
-            System.out.println("Wypadła 6");
+        int a = rand.nextInt(6); // losowanie prawdopodobieństwa akceptacji zepsutego samochodu
+        if (a == 1) {
+             acceptsBroken = true;
         } else {
-            boolean acceptsBroken = false;
-
+            acceptsBroken = false;
+        }
             Random random = new Random();
 
 
@@ -37,12 +34,11 @@ public class CustomerDb {
                         segments.get(random.nextInt(segments.size())),
                         brands.get(random.nextInt(brands.size())),
                         brands.get(random.nextInt(brands.size())),
-                        random.nextBoolean()
+                        acceptsBroken
 
                 ));
-            }
-            return result;
-        }
-        return result;
+
+            } return result;
+
     }
 }

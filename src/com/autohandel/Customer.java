@@ -1,12 +1,13 @@
 package com.autohandel;
 
 public class Customer {
+
     String name;
     long budget;
     String desiredSegment; //z jakiego segmentu auto chce kupić
     String desiredBrand1;
     String desiredBrand2;
-    boolean acceptsBroken;
+    public boolean acceptsBroken = false;
 
     @Override
     public String toString() {
@@ -16,7 +17,7 @@ public class Customer {
                 ", desiredSegment='" + desiredSegment + '\'' +
                 ", desiredBrand1='" + desiredBrand1 + '\'' +
                 ", desiredBrand2='" + desiredBrand2 + '\'' +
-                ", acceptsBroken=" + acceptsBroken +
+                ", acceptsBroken=" + isAcceptsBroken() +
                 '}';
     }
 
@@ -74,6 +75,6 @@ public class Customer {
         this.desiredSegment = desiredSegment;
         this.desiredBrand1 = desiredBrand1;
         this.desiredBrand2 = desiredBrand2;
-        this.acceptsBroken = acceptsBroken;
+        this.setAcceptsBroken(acceptsBroken);
     }
 }

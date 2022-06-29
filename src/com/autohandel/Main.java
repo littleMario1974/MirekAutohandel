@@ -4,18 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
 
 
     public static void main(String[] args) throws IOException {
-        String lastInput = "";
+
         try (InputStreamReader isr = new InputStreamReader(System.in);
              BufferedReader bufferedReader = new BufferedReader(isr)) {
-
-            Double cash = 5000.0; // początkowy zasób gotówki;
+            String lastInput = "";
+            int moves = 0;
+            AutoHandel autohandel = new AutoHandel();
+            autohandel.setCash(5000);
             CarDb dealers = new CarDb();
 
 
@@ -27,32 +28,34 @@ public class Main {
                 switch (lastInput) {
                     case "1":
                         System.out.println("Baza samochodów do kupienia");
-                        System.out.println(dealers.carsForSale);
-
-
-
+                        dealers.getCarsForSale().forEach(System.out::println);
                         break;
                     case "2":
                         System.out.println("Kup samochód");
+                        System.out.println(buyCar(autohandel, dealers, bufferedReader));
+                        moves++;
                         break;
                     case "3":
                         System.out.println("Baza posiadanych samochodów");
                         break;
                     case "4":
                         System.out.println("Naprawa samochodów");
+                        moves++;
                         break;
                     case "5":
                         System.out.println("Potencjalni klienci");
                         break;
                     case "6":
                         System.out.println("Sprzedaż samochodu");
+                        moves++;
                         break;
                     case "7":
                         System.out.println("Kup reklamę");
+                        moves++;
                         break;
                     case "8":
                         System.out.println("Stan konta");
-                        System.out.println("Masz na koncie " + cash + " zł");
+                        System.out.println("Masz na koncie " + autohandel.getCash() + " zł");
                         break;
                     case "9":
                         System.out.println("Historia transakcji");
@@ -68,10 +71,48 @@ public class Main {
                 }
             } while (!lastInput.equalsIgnoreCase("x"));
         }
-        //System.out.println("Do widzenia...");
+        System.out.println("Do widzenia...");
     }
 
+    private static String buyCar(AutoHandel autoHandel, CarDb dealers, BufferedReader bufferedReader) {
+        List<Car> carsForSale = dealers.getCarsForSale();
+        System.out.println("Wybierz auto do kupienia: ");
+        IntStream.range(0, carsForSale.size()).forEach(i -> {
+            System.out.println(i + 1 + ".\t" + carsForSale.get(i));
+        });
+        try {
+            String choiceString = bufferedReader.readLine();
+            int choice = Integer.parseInt(choiceString);
+            choice--;
+            if (0 > choice || choice > carsForSale.size()) {
+                return "Błędny wybór";
+            }
+            Car chosenCar = carsForSale.get(choice);
+            if (chosenCar.getValue() > autoHandel.getCash()) {
+                return String.format("Nie masz tyle kasy. Trzeba %s a masz %s", chosenCar.getValue(),autoHandel.getCash());
+            }
+            carsForSale.remove(chosenCar);
+            autoHandel.setCash(autoHandel.getCash()-chosenCar.getValue());
+            autoHandel.getCars().add(chosenCar);
+            //todo Dodatkowo każdy samochód musisz umyć i zapłacić 2% podatku od wartości przy zakupie i przy sprzedaży.
+            
+            //import new car in missing segment from german autohaus
+            switch(chosenCar.getSegment()){
+                case "budget": carsForSale.add(dealers.generateBudgetCar());break;
+                case "standard": carsForSale.add(dealers.generateStandardCar());break;
+                case "premium": carsForSale.add(dealers.generatePremiumCar());break;
+                case "utility": carsForSale.add(dealers.generateUtilityCar());break;
+            }
+            return String.format("Kupiłeś %s za %s. Zostało Ci %s",chosenCar.getBrand(), chosenCar.getValue(), autoHandel.getCash());
 
+
+        } catch (IOException e) {
+            e.printStackTrace(System.err);
+        }
+        return null;
+    }
+
+    //a co to?
     Mechanic janusz = new Mechanic("Janusz", 0, 0, 50);
     Mechanic marian = new Mechanic("Marian", 10, 0, 30);
     Mechanic adrian = new Mechanic("Adrian", 20, 2, 10);

@@ -8,6 +8,15 @@ public class Car {
     String brand;
     long mileage;
     String color;
+    String segment;
+    long capacity;
+
+    //maintainable
+    boolean brakes;
+    boolean suspension;
+    boolean engine;
+    boolean body;
+    boolean gearbox;
 
     @Override
     public String toString() {
@@ -17,8 +26,6 @@ public class Car {
                 getBrand(),getValue(),getColor(),getMileage(),getSegment(),getCapacity(), isBrakesBroken(), isSuspensionBroken(), isEngineBroken(), isBodyBroken(), isGearboxBroken());
     }
 
-    String segment;
-    long capacity;
 
     //maintainable
     boolean brakesBroken;
@@ -26,6 +33,7 @@ public class Car {
     boolean engineBroken;
     boolean bodyBroken;
     boolean gearboxBroken;
+
 
     public Car() {
 

@@ -80,6 +80,9 @@ public class CarDb {
 
     private List<Car> generateCarsForSale() {
         List<Car> result = new ArrayList<>();
+        List<String> brands = List.of("Audi", "Mercedes", "Fiat", "Porsche", "Volkswagen", "BMW", "Citroen", "Opel", "Peugeot", "Dacia", "Hyundai", "Mazda");
+        List<String> colors = List.of("blue", "red", "green", "white", "yellow", "black", "brown", "pink");
+        Random random = new Random();
 
 
         //generate budget cars

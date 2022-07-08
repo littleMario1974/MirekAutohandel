@@ -18,7 +18,7 @@ public class Main {
             AutoHandel autohandel = new AutoHandel();
             autohandel.setCash(5000);
             CarDb dealers = new CarDb();
-
+            CustomerDb potentialCustomers = new CustomerDb();
 
             do {
                 System.out.println(printMenu());
@@ -44,6 +44,8 @@ public class Main {
                         break;
                     case "5":
                         System.out.println("Potencjalni klienci");
+                        System.out.println(potentialCustomers.customers);
+
                         break;
                     case "6":
                         System.out.println("Sprzedaż samochodu");
@@ -66,8 +68,8 @@ public class Main {
                     case "11":
                         System.out.println("Suma kosztów napraw i mycia samochodu");
                         break;
-                    default:
-                        System.out.println("Podałeś niewłaściwą opcję");
+                    //default:
+                        //System.out.println("Podałeś niewłaściwą opcję");
                 }
             } while (!lastInput.equalsIgnoreCase("x"));
         }

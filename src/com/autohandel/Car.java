@@ -1,5 +1,7 @@
 package com.autohandel;
 
+import java.text.MessageFormat;
+
 public class Car {
     //properties
     long value;
@@ -18,21 +20,19 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Car{" +
-                "wartość=" + value +
-                ", marka='" + brand + '\'' +
-                ", przebieg=" + mileage +
-                ", kolor='" + color + '\'' +
-                ", segment='" + segment + '\'' +
-                ", przestrzeń ładunkowa=" + capacity +
-                ", naprawa hamulców=" + brakes +
-                ", naprawa zawieszenia=" + suspension +
-                ", naprawa silnika=" + engine +
-                ", naprawa karoserii=" + body +
-                ", naprawa skrzyni biegów=" + gearbox +
-                '}';
+        /*return String.format("%s: [Cena: %s, Kolor: %s, Przebieg: %s, Segment: %s, Ładowność: %s]. Zepsute: [Hamulce: %s, Zawieszenie: %s, Silnik: %s, Karoseria: %s, Skrzynia biegów: %s]",
+                getBrand(),getColor(),getMileage(),getSegment(),getCapacity(),isBrakes(),isSuspension(),isEngine(),isBody(),isGearbox());*/
+        return MessageFormat.format("{0}: [Cena: {1}, Kolor: {2}, Przebieg: {3}, Segment: {4}, Ładowność: {5}]. Zepsute: [Hamulce: {6}, Zawieszenie: {7}, Silnik: {8}, Karoseria: {9}, Skrzynia biegów: {10}]",
+                getBrand(),getValue(),getColor(),getMileage(),getSegment(),getCapacity(), isBrakesBroken(), isSuspensionBroken(), isEngineBroken(), isBodyBroken(), isGearboxBroken());
     }
 
+
+    //maintainable
+    boolean brakesBroken;
+    boolean suspensionBroken;
+    boolean engineBroken;
+    boolean bodyBroken;
+    boolean gearboxBroken;
 
 
     public Car() {
@@ -87,57 +87,57 @@ public class Car {
         this.capacity = capacity;
     }
 
-    public boolean isBrakes() {
-        return brakes;
+    public boolean isBrakesBroken() {
+        return brakesBroken;
     }
 
-    public void setBrakes(boolean brakes) {
-        this.brakes = brakes;
+    public void setBrakesBroken(boolean brakesBroken) {
+        this.brakesBroken = brakesBroken;
     }
 
-    public boolean isSuspension() {
-        return suspension;
+    public boolean isSuspensionBroken() {
+        return suspensionBroken;
     }
 
-    public void setSuspension(boolean suspension) {
-        this.suspension = suspension;
+    public void setSuspensionBroken(boolean suspensionBroken) {
+        this.suspensionBroken = suspensionBroken;
     }
 
-    public boolean isEngine() {
-        return engine;
+    public boolean isEngineBroken() {
+        return engineBroken;
     }
 
-    public void setEngine(boolean engine) {
-        this.engine = engine;
+    public void setEngineBroken(boolean engineBroken) {
+        this.engineBroken = engineBroken;
     }
 
-    public boolean isBody() {
-        return body;
+    public boolean isBodyBroken() {
+        return bodyBroken;
     }
 
-    public void setBody(boolean body) {
-        this.body = body;
+    public void setBodyBroken(boolean bodyBroken) {
+        this.bodyBroken = bodyBroken;
     }
 
-    public boolean isGearbox() {
-        return gearbox;
+    public boolean isGearboxBroken() {
+        return gearboxBroken;
     }
 
-    public void setGearbox(boolean gearbox) {
-        this.gearbox = gearbox;
+    public void setGearboxBroken(boolean gearboxBroken) {
+        this.gearboxBroken = gearboxBroken;
     }
 
-    public Car(long value, String brand, long mileage, String color, String segment, long capacity, boolean brakes, boolean suspension, boolean engine, boolean body, boolean gearbox) {
+    public Car(long value, String brand, long mileage, String color, String segment, long capacity, boolean brakesBroken, boolean suspensionBroken, boolean engineBroken, boolean bodyBroken, boolean gearboxBroken) {
         this.value = value;
         this.brand = brand;
         this.mileage = mileage;
         this.color = color;
         this.segment = segment;
         this.capacity = capacity;
-        this.brakes = brakes;
-        this.suspension = suspension;
-        this.engine = engine;
-        this.body = body;
-        this.gearbox = gearbox;
+        this.brakesBroken = brakesBroken;
+        this.suspensionBroken = suspensionBroken;
+        this.engineBroken = engineBroken;
+        this.bodyBroken = bodyBroken;
+        this.gearboxBroken = gearboxBroken;
     }
 }

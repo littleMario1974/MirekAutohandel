@@ -65,12 +65,12 @@ public class Main {
                     case "11":
                         System.out.println("Suma kosztów napraw i mycia samochodu");
                         break;
-                    default:
-                        System.out.println("Podałeś niewłaściwą opcję");
+                    //default:
+                        //System.out.println("Podałeś niewłaściwą opcję");
                 }
             } while (!lastInput.equalsIgnoreCase("x"));
         }
-        //System.out.println("Do widzenia...");
+        System.out.println("Do widzenia...");
     }
 
 

@@ -10,14 +10,20 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        Mechanic janusz = new Mechanic("Janusz", 0, 0, 100);
+        Mechanic marian = new Mechanic("Marian", 10, 0, 30);
+        Mechanic adrian = new Mechanic("Adrian", 20, 2, 10);
+
+
+
         try (InputStreamReader isr = new InputStreamReader(System.in);
              BufferedReader bufferedReader = new BufferedReader(isr)) {
             String lastInput = "";
-            int moves = 0;
+            int moves = 0; //zlicza ilość wykonanych ruchów
             AutoHandel autohandel = new AutoHandel();
-            autohandel.setCash(5000);
+            autohandel.setCash(50000);
             CarDb dealers = new CarDb();
-            CustomerDb potentialCustomers = new CustomerDb();
+            CustomerDb potentialCustomers = new CustomerDb(); //potencjalni klienci
 
             do {
                 System.out.println(printMenu());
@@ -35,13 +41,57 @@ public class Main {
                         moves++;
                         break;
                     case "3":
-                        System.out.println("Baza posiadanych samochodów");
-
+                        if (autohandel.getCars().size()==0){
+                            System.out.println("Nie masz żadnych samochodów");
+                        }
+                        else
+                            System.out.println("Baza posiadanych samochodów");
+                            autohandel.getCars().forEach(System.out::println);
                         break;
                     case "4":
                         System.out.println("Naprawa samochodów");
+                        // wylistowanie samochodów z uszkodzonym elementem
+                        //System.out.println("Samochody z uszkodzeniami");
+
+                        for (int i = 0; i < autohandel.getCars().size(); i++) {
+
+
+                            System.out.println(i + 1 + ".\t" + autohandel.getCars().get(i));
+                            if (autohandel.getCars().get(i).brakesBroken) {
+                                System.out.println("\tZepsute hamulce.");
+                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value / 800 * janusz.margin);
+                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 800 * marian.margin);
+                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 800 * adrian.margin);
+                            }
+                            if (autohandel.getCars().get(i).suspensionBroken) {
+                                System.out.println("\tZepsute zawieszenie.");
+                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value / 400 * janusz.margin);
+                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 400 * marian.margin);
+                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 400 * adrian.margin);
+                            }
+                            if (autohandel.getCars().get(i).engineBroken) {
+                                System.out.println("\tZepsuty silnik.");
+                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value/ 300 * janusz.margin);
+                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 300 * marian.margin);
+                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 300 * adrian.margin);
+                            }
+                            if (autohandel.getCars().get(i).bodyBroken) {
+                                System.out.println("\tUszkodzona karoseria.");
+                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value/ 500 * janusz.margin);
+                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 500 * marian.margin);
+                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 500 * adrian.margin);
+                            }
+                            if (autohandel.getCars().get(i).gearboxBroken) {
+                                System.out.println("\tZepsuta skrzynia biegów");
+                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value/ 200 * janusz.margin);
+                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 200 * marian.margin);
+                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 200 * adrian.margin);
+                            }
+                        }
+
                         moves++;
                         break;
+
                     case "5":
                         System.out.println("Potencjalni klienci");
                         potentialCustomers.getCustomers().forEach(System.out::println);
@@ -94,12 +144,12 @@ public class Main {
             if (chosenCar.getValue() > autoHandel.getCash()) {
                 return String.format("Nie masz tyle kasy. Trzeba %s a masz %s", chosenCar.getValue(), autoHandel.getCash());
             }
-            carsForSale.remove(chosenCar);
-            autoHandel.setCash(autoHandel.getCash() - chosenCar.getValue());
-            autoHandel.getCars().add(chosenCar);
+            carsForSale.remove(chosenCar); //usuwanie kupionego samochodu z listy do kupienia
+            autoHandel.setCash(autoHandel.getCash() - chosenCar.getValue()); //pomniejszenie dostępnej gotówki
+            autoHandel.getCars().add(chosenCar); //dodanie samochodu do bazy samochodów Autohandlu
             //todo Dodatkowo każdy samochód musisz umyć i zapłacić 2% podatku od wartości przy zakupie i przy sprzedaży.
 
-            //import new car in missing segment from german autohaus
+            //import new car in missing segment from german autohaus :)
             switch (chosenCar.getSegment()) {
                 case "budget":
                     carsForSale.add(dealers.generateBudgetCar());
@@ -123,10 +173,7 @@ public class Main {
         }
     }
 
-    //a co to?
-    Mechanic janusz = new Mechanic("Janusz", 0, 0, 50);
-    Mechanic marian = new Mechanic("Marian", 10, 0, 30);
-    Mechanic adrian = new Mechanic("Adrian", 20, 2, 10);
+
 
 
     private static String readInput(BufferedReader bufferedReader) throws IOException {

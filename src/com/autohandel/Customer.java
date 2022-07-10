@@ -1,5 +1,7 @@
 package com.autohandel;
 
+import java.text.MessageFormat;
+
 public class Customer {
 
     String name;
@@ -11,14 +13,17 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        /*return "Customer{" +
                 "name='" + name + '\'' +
                 ", budget=" + budget +
                 ", desiredSegment='" + desiredSegment + '\'' +
                 ", desiredBrand1='" + desiredBrand1 + '\'' +
                 ", desiredBrand2='" + desiredBrand2 + '\'' +
                 ", acceptsBroken=" + isAcceptsBroken() +
-                '}';
+                '}';*/
+        return MessageFormat.format("Nazwisko: {0}, Ilość gotówki: {1}, Preferowany segment: {2}, Preferowana 1 marka: {3}, Preferowana 2 marka: {4}, Czy akceptuje uszkodzone auto: {5}",
+                getName(),getBudget(),getDesiredSegment(),getDesiredBrand1(),getDesiredBrand2(), isAcceptsBroken());
+
     }
 
     public String getName() {

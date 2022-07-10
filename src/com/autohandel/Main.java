@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Main {
 
@@ -37,6 +36,7 @@ public class Main {
                         break;
                     case "3":
                         System.out.println("Baza posiadanych samochodów");
+
                         break;
                     case "4":
                         System.out.println("Naprawa samochodów");
@@ -44,7 +44,8 @@ public class Main {
                         break;
                     case "5":
                         System.out.println("Potencjalni klienci");
-                        System.out.println(potentialCustomers.customers);
+                        potentialCustomers.getCustomers().forEach(System.out::println);
+                        //System.out.println(potentialCustomers.customers);
 
                         break;
                     case "6":
@@ -69,7 +70,7 @@ public class Main {
                         System.out.println("Suma kosztów napraw i mycia samochodu");
                         break;
                     //default:
-                        //System.out.println("Podałeś niewłaściwą opcję");
+                    //System.out.println("Podałeś niewłaściwą opcję");
                 }
             } while (!lastInput.equalsIgnoreCase("x"));
         }
@@ -79,9 +80,9 @@ public class Main {
     private static String buyCar(AutoHandel autoHandel, CarDb dealers, BufferedReader bufferedReader) {
         List<Car> carsForSale = dealers.getCarsForSale();
         System.out.println("Wybierz auto do kupienia: ");
-        IntStream.range(0, carsForSale.size()).forEach(i -> {
+        for (int i = 0; i < carsForSale.size(); i++) {
             System.out.println(i + 1 + ".\t" + carsForSale.get(i));
-        });
+        }
         try {
             String choiceString = bufferedReader.readLine();
             int choice = Integer.parseInt(choiceString);
@@ -91,27 +92,35 @@ public class Main {
             }
             Car chosenCar = carsForSale.get(choice);
             if (chosenCar.getValue() > autoHandel.getCash()) {
-                return String.format("Nie masz tyle kasy. Trzeba %s a masz %s", chosenCar.getValue(),autoHandel.getCash());
+                return String.format("Nie masz tyle kasy. Trzeba %s a masz %s", chosenCar.getValue(), autoHandel.getCash());
             }
             carsForSale.remove(chosenCar);
-            autoHandel.setCash(autoHandel.getCash()-chosenCar.getValue());
+            autoHandel.setCash(autoHandel.getCash() - chosenCar.getValue());
             autoHandel.getCars().add(chosenCar);
             //todo Dodatkowo każdy samochód musisz umyć i zapłacić 2% podatku od wartości przy zakupie i przy sprzedaży.
-            
+
             //import new car in missing segment from german autohaus
-            switch(chosenCar.getSegment()){
-                case "budget": carsForSale.add(dealers.generateBudgetCar());break;
-                case "standard": carsForSale.add(dealers.generateStandardCar());break;
-                case "premium": carsForSale.add(dealers.generatePremiumCar());break;
-                case "utility": carsForSale.add(dealers.generateUtilityCar());break;
+            switch (chosenCar.getSegment()) {
+                case "budget":
+                    carsForSale.add(dealers.generateBudgetCar());
+                    break;
+                case "standard":
+                    carsForSale.add(dealers.generateStandardCar());
+                    break;
+                case "premium":
+                    carsForSale.add(dealers.generatePremiumCar());
+                    break;
+                case "utility":
+                    carsForSale.add(dealers.generateUtilityCar());
+                    break;
             }
-            return String.format("Kupiłeś %s za %s. Zostało Ci %s",chosenCar.getBrand(), chosenCar.getValue(), autoHandel.getCash());
+            return String.format("Kupiłeś %s za %s. Zostało Ci %s", chosenCar.getBrand(), chosenCar.getValue(), autoHandel.getCash());
 
 
-        } catch (IOException e) {
-            e.printStackTrace(System.err);
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+            return "";
         }
-        return null;
     }
 
     //a co to?

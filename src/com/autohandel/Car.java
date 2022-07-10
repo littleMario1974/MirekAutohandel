@@ -22,7 +22,7 @@ public class Car {
     public String toString() {
         /*return String.format("%s: [Cena: %s, Kolor: %s, Przebieg: %s, Segment: %s, Ładowność: %s]. Zepsute: [Hamulce: %s, Zawieszenie: %s, Silnik: %s, Karoseria: %s, Skrzynia biegów: %s]",
                 getBrand(),getColor(),getMileage(),getSegment(),getCapacity(),isBrakes(),isSuspension(),isEngine(),isBody(),isGearbox());*/
-        return MessageFormat.format("{0}: [Cena: {1}, Kolor: {2}, Przebieg: {3}, Segment: {4}, Ładowność: {5}]. Zepsute: [Hamulce: {6}, Zawieszenie: {7}, Silnik: {8}, Karoseria: {9}, Skrzynia biegów: {10}]",
+        return MessageFormat.format("{0}:\t\t\t[Cena: {1}, Kolor: {2}, Przebieg: {3}, Segment: {4}, Ładowność: {5}]. Zepsute: [Hamulce: {6}, Zawieszenie: {7}, Silnik: {8}, Karoseria: {9}, Skrzynia biegów: {10}]",
                 getBrand(),getValue(),getColor(),getMileage(),getSegment(),getCapacity(), isBrakesBroken(), isSuspensionBroken(), isEngineBroken(), isBodyBroken(), isGearboxBroken());
     }
 

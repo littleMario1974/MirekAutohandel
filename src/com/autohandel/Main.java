@@ -10,9 +10,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Mechanic janusz = new Mechanic("Janusz", 0, 0, 100);
-        Mechanic marian = new Mechanic("Marian", 10, 0, 30);
-        Mechanic adrian = new Mechanic("Adrian", 20, 2, 10);
+        Mechanic janusz = new Mechanic("Janusz", 0, 0, 200);
+        Mechanic marian = new Mechanic("Marian", 10, 0, 100);
+        Mechanic adrian = new Mechanic("Adrian", 20, 2, 50);
 
 
 
@@ -55,39 +55,48 @@ public class Main {
 
                         for (int i = 0; i < autohandel.getCars().size(); i++) {
 
-
                             System.out.println(i + 1 + ".\t" + autohandel.getCars().get(i));
+                            if (!autohandel.getCars().get(i).brakesBroken && !autohandel.getCars().get(i).suspensionBroken && !autohandel.getCars().get(i).engineBroken && !autohandel.getCars().get(i).bodyBroken && !autohandel.getCars().get(i).gearboxBroken) {
+                                System.out.println(" - samochód sprawny");
+                            }
+
                             if (autohandel.getCars().get(i).brakesBroken) {
                                 System.out.println("\tZepsute hamulce.");
-                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value / 800 * janusz.margin);
-                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 800 * marian.margin);
-                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 800 * adrian.margin);
+                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 80 + janusz.margin));
+                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 80 + marian.margin));
+                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 80 + adrian.margin));
                             }
                             if (autohandel.getCars().get(i).suspensionBroken) {
                                 System.out.println("\tZepsute zawieszenie.");
-                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value / 400 * janusz.margin);
-                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 400 * marian.margin);
-                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 400 * adrian.margin);
+                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 40 + janusz.margin));
+                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 40 + marian.margin));
+                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 40 + adrian.margin));
                             }
                             if (autohandel.getCars().get(i).engineBroken) {
                                 System.out.println("\tZepsuty silnik.");
-                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value/ 300 * janusz.margin);
-                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 300 * marian.margin);
-                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 300 * adrian.margin);
+                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 30 + janusz.margin));
+                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 30 + marian.margin));
+                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 30 + adrian.margin));
                             }
                             if (autohandel.getCars().get(i).bodyBroken) {
                                 System.out.println("\tUszkodzona karoseria.");
-                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value/ 500 * janusz.margin);
-                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 500 * marian.margin);
-                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 500 * adrian.margin);
+                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 50 + janusz.margin));
+                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 50 + marian.margin));
+                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 50 + adrian.margin));
                             }
                             if (autohandel.getCars().get(i).gearboxBroken) {
                                 System.out.println("\tZepsuta skrzynia biegów");
-                                System.out.println("\t\tNaprawa u Janusza to: " + autohandel.getCars().get(i).value/ 200 * janusz.margin);
-                                System.out.println("\t\tNaprawa u Mariana to: " + autohandel.getCars().get(i).value / 200 * marian.margin);
-                                System.out.println("\t\tNaprawa u Adriana to: " + autohandel.getCars().get(i).value / 200 * adrian.margin);
+                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 20 + janusz.margin));
+                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 20 + marian.margin));
+                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 20 + adrian.margin));
                             }
                         }
+                        System.out.println("Wskaż numer samochodu do naprawy");
+
+
+
+
+
 
                         moves++;
                         break;

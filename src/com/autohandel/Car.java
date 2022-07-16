@@ -140,4 +140,7 @@ public class Car {
         this.bodyBroken = bodyBroken;
         this.gearboxBroken = gearboxBroken;
     }
+
 }
+
+

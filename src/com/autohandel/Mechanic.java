@@ -12,4 +12,12 @@ public class Mechanic {
         this.breakingAnotherElementProbability = breakingAnotherElementProbability;
         this.margin = margin;
     }
+
+    /*void repair() {
+        //if (name == "Janusz"); {
+
+
+    }*/
+
+
 }

@@ -44,8 +44,7 @@ public class Main {
                     case "2":
                         System.out.println("Kup samochód");
                         System.out.println(buyCar(autohandel, dealers, bufferedReader));
-                        // todo dodawanie do listy transakcji
-                        //
+
 
                         moves++;
                         break;
@@ -228,7 +227,7 @@ public class Main {
             carsForSale.remove(chosenCar); //usuwanie kupionego samochodu z listy do kupienia
             autoHandel.setCash(autoHandel.getCash() - chosenCar.getValue()); //pomniejszenie dostępnej gotówki
             autoHandel.getCars().add(chosenCar); //dodanie samochodu do bazy samochodów Autohandlu
-            transactionHistory.add("Zakup   " + chosenCar);
+            transactionHistory.add("Zakup   " + chosenCar); //dodanie do listy historii transakicji kupno/sprzedaż
             //todo Dodatkowo każdy samochód musisz umyć i zapłacić 2% podatku od wartości przy zakupie i przy sprzedaży.
 
 
@@ -261,59 +260,94 @@ public class Main {
     //******************************************************
 
     private static String sellCar(AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
-        List<Car> Cars = autoHandel.getCars();
+        List<Car> autoHandelCars = autoHandel.getCars();
         List<Customer> Customers = potentialCustomers.getCustomers();
-        if (Cars.size() == 0) {
+        //boolean brokenCar = false;
+
+
+        if (autoHandelCars.size() == 0) {
             System.out.println("Nie posiadasz samochodów na sprzedaż.");
 
         } else System.out.println("Wybierz auto, które chcesz sprzedać: ");
-        for (int i = 0; i < Cars.size(); i++) {
-            System.out.println(i + 1 + ".\t" + Cars.get(i));
+        for (int i = 0; i < autoHandelCars.size(); i++) {
+            System.out.println(i + 1 + ".\t" + autoHandelCars.get(i));
         }
 
         try {
             String choiceString = bufferedReader.readLine();
             int choice = Integer.parseInt(choiceString);
             choice--;
-            if (0 > choice || choice > Cars.size()) {
+            if (0 > choice || choice > autoHandelCars.size()) {
                 return "Błędny wybór";
             }
-            Car chosenCar = Cars.get(choice);
+            Car chosenCar = autoHandelCars.get(choice);
             System.out.println("Wybrałeś do sprzedaży: " + chosenCar);
+
+
+            boolean brokenCar = false;
+            if (chosenCar.isBrakesBroken() || chosenCar.isSuspensionBroken() || chosenCar.isEngineBroken() || chosenCar.isBodyBroken() || chosenCar.isGearboxBroken())
+            {
+            brokenCar = true; // jeśli któryś element zepsuty to true
+            }
+
 
             System.out.println("Wybierz klienta: ");
             for (int i = 0; i < potentialCustomers.getCustomers().size(); i++) {
-                System.out.println(i + 1 + ".\t" + potentialCustomers.getCustomers().get(i)); //listowanie potencjalnego klienta
+                System.out.println(i + 1 + ".\t" + Customers.get(i)); //listowanie potencjalnego klienta
             }
-
-
 
             Scanner input = new Scanner(System.in);
             String choice2 = input.nextLine();
             try {
                 int number = Integer.parseInt(choice2);
+                if (0 > number || number > potentialCustomers.getCustomers().size()) {
+                    return ("Podaj liczbe z zakresu od 1 do " + potentialCustomers.getCustomers().size());
+                }
                 System.out.println(number);
             } catch (NumberFormatException e) {
-                System.out.println("Podaj liczbę z zakresu od 1 do " + potentialCustomers.getCustomers().size());
 
-                //System.out.println("Wybrałeś klienta: " + number);
+                    System.out.println("To nie jest liczba. Podaj liczbe z zakresu od 1 do " + potentialCustomers.getCustomers().size());
+
+
 
             }
-            //String choiceString2 = bufferedReader.readLine();
-            //int choice2 = Integer.parseInt(choiceString2);
-            //choice2--;
-            //if (0 > choice2 || choice2 > potentialCustomers.getCustomers().size()) {
-                //return "Błędny wybór";
-            //}
-            //Customer chosenCustomer = potentialCustomers.getCustomers().get((choice2));
-            //System.out.println("Wybrałeś klienta: " + chosenCustomer);
+            int potentialCustomerNumber = (Integer.parseInt(choice2)-1); //parsowanie na liczbę minus jeden, bo od zera się zaczyna
+            System.out.println("Wybrałeś klienta nr: " + potentialCustomers.getCustomers().get(potentialCustomerNumber));
+
+
+            //todo sprawdzenie czy ma kasę, czy odpowaida segment i marka 1 i 2 i czy akcetuje zespsuty samochód jeśli taki wybrałeś
+
+            if (Customers.get(potentialCustomerNumber).getBudget() < chosenCar.value) {
+                return ("Kupujący jest za biedny. :(");
+            }
+            if (Customers.get(potentialCustomerNumber).getDesiredSegment() != chosenCar.getSegment()) {
+                return ("Kupujący preferuje inny segment. :(");
+            }
+            if ((Customers.get(potentialCustomerNumber).getDesiredBrand1() != chosenCar.getBrand()) && (Customers.get(potentialCustomerNumber).getDesiredBrand2() != chosenCar.getBrand())) {
+                return ("Kupujący preferuje inne marki. :(");
+            }
+            if (brokenCar) {
+                if (!Customers.get(potentialCustomerNumber).acceptsBroken)
+            return ("Kupujący nie akceptuje zesputych samochodów");
+            }
+            autoHandelCars.remove(chosenCar); //usuwanie sprzedanego samochodu z listy AutoHandlu
+            autoHandel.setCash(autoHandel.getCash() + chosenCar.getValue());//powiększenie dostępnej gotówki o cenę samochodu
+            // todo usuwanie potencjalnego klienta, który kupił samochód
+            Customers.remove(potentialCustomerNumber); //usuwanie klienta, który kupił samochód
+
+            transactionHistory.add("Sprzedaż   " + chosenCar); //dodanie do listy historii transakicji kupno/sprzedaż
+
+            return "Gratulacje !!! Samochód sprzedany !";
 
             } catch (Exception e) {
             e.printStackTrace(System.out);
             return "";
         }
 
-        //todo wybór kupującego, sprawdzenie czy ma kasę, czy odpowaida segment i marka 1 i 2 i czy akcetuje zespsuty samochód jeśli taki wybrałeś
+
+
+
+
 
 
 
@@ -347,7 +381,7 @@ public class Main {
                     carsForSale.add(dealers.generateUtilityCar());
                     break;
             } */
-        return String.format("Sprzedałeś samochód: "); //+ chosenCar + " klientowi " + chosenCustomer);
+        //return String.format("Samochód sprzedany");
 
     }
 

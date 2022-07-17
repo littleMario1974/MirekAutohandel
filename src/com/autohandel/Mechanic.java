@@ -13,11 +13,5 @@ public class Mechanic {
         this.margin = margin;
     }
 
-    /*void repair() {
-        //if (name == "Janusz"); {
-
-
-    }*/
-
 
 }

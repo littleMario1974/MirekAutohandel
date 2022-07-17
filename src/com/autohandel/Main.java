@@ -1,13 +1,18 @@
 package com.autohandel;
 
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
+
+    static List<String> transactionHistory = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
 
@@ -39,18 +44,21 @@ public class Main {
                     case "2":
                         System.out.println("Kup samochód");
                         System.out.println(buyCar(autohandel, dealers, bufferedReader));
+                        // todo dodawanie do listy transakcji
+                        //
+
                         moves++;
                         break;
                     case "3":
-                        if (autohandel.getCars().size()==0){
+                        if (autohandel.getCars().size() == 0) {
                             System.out.println("Nie masz żadnych samochodów");
-                        }
-                        else
+                        } else
                             System.out.println("Baza posiadanych samochodów");
-                            autohandel.getCars().forEach(System.out::println);
+                        autohandel.getCars().forEach(System.out::println);
                         break;
                     case "4":
                         System.out.println("Naprawa samochodów");
+
                         // wylistowanie samochodów z uszkodzonym elementem
                         //System.out.println("Samochody z uszkodzeniami");
 
@@ -95,9 +103,9 @@ public class Main {
                         System.out.println("Wskaż numer samochodu do naprawy:");
 
                         try {
-                                    String choiceString = bufferedReader.readLine();
-                                    int choice = Integer.parseInt(choiceString);
-                                    choice--;
+                            String choiceString = bufferedReader.readLine();
+                            int choice = Integer.parseInt(choiceString);
+                            choice--;
 
                             if (choice + 1 > autohandel.getCars().size())
                                 System.out.println("Nie masz tylu samochodów.");
@@ -130,28 +138,28 @@ public class Main {
                                 if (autohandel.getCars().get(choice).gearboxBroken) {
                                     System.out.println("\t" + x + ". skrzynia biegów");
                                 }
-                                if ( x > 2 ) System.out.println("\tCo naprawiamy ? Podaj numer:"); // jeśli jest więcej niż jedna usterka
+                                if (x > 2)
+                                    System.out.println("\tCo naprawiamy ? Podaj numer:"); // jeśli jest więcej niż jedna usterka
                                 // TODO: wybór elementu do naprawy
 
 
                                 Scanner input = new Scanner(System.in);
                                 String choice2 = input.nextLine();
-                                try
-                                {
+                                try {
                                     int number = Integer.parseInt(choice2);
-                                }
-                                catch(NumberFormatException e) {
-                                    System.out.println("Podaj liczbę z zakresu od 1 do " + x);
+                                    System.out.println("Wybrałeś numer " + (number));
+                                } catch (NumberFormatException e) {
 
-                                    System.out.println("Wybrałeś do naprawy element nr " + choice2);
+                                    //System.out.println("Podaj liczbę z zakresu od 1 do " + (x-1));
+
+                                    //System.out.println("Wybrałeś do naprawy element nr " + choice2);
 
                                 }
 
                             }
 
-                                } catch (Exception e) {
-                            e.printStackTrace(System.out);
-                            return;
+                        } catch (Exception e) {
+                    e.printStackTrace(System.out);
                         }
 
 
@@ -166,7 +174,7 @@ public class Main {
                         break;
                     case "6":
                         System.out.println("Sprzedaż samochodu");
-                        //todo wybierz samochód, wybierz klienta i sprawdź czy ma wystarczająco dużo gotówki, czy segment i marka odpowiada i czy akcetuje zespsuty samochód jeśli taki wybrałeś
+
                         System.out.println(sellCar(autohandel, potentialCustomers, bufferedReader));
 
                         moves++;
@@ -180,7 +188,10 @@ public class Main {
                         System.out.println("Masz na koncie " + autohandel.getCash() + " zł");
                         break;
                     case "9":
-                        System.out.println("Historia transakcji");
+                        System.out.println("Historia transakcji " + "(ilość transakcji " + transactionHistory.size() + ")");
+                        for (int i = 0; i < transactionHistory.size(); i++) {
+                            System.out.println(i + 1 + ".\t" + transactionHistory.get(i));
+                        }
                         break;
                     case "10":
                         System.out.println("Historia naprawy samochodu");
@@ -217,6 +228,7 @@ public class Main {
             carsForSale.remove(chosenCar); //usuwanie kupionego samochodu z listy do kupienia
             autoHandel.setCash(autoHandel.getCash() - chosenCar.getValue()); //pomniejszenie dostępnej gotówki
             autoHandel.getCars().add(chosenCar); //dodanie samochodu do bazy samochodów Autohandlu
+            transactionHistory.add("Zakup   " + chosenCar);
             //todo Dodatkowo każdy samochód musisz umyć i zapłacić 2% podatku od wartości przy zakupie i przy sprzedaży.
 
 
@@ -235,6 +247,7 @@ public class Main {
                     carsForSale.add(dealers.generateUtilityCar());
                     break;
             }
+
             return String.format("Kupiłeś %s za %s. Zostało Ci %s", chosenCar.getBrand(), chosenCar.getValue(), autoHandel.getCash());
 
 
@@ -244,12 +257,13 @@ public class Main {
         }
     }
 
+
     //******************************************************
 
     private static String sellCar(AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
         List<Car> Cars = autoHandel.getCars();
-
-        if (Cars.size()==0) {
+        List<Customer> Customers = potentialCustomers.getCustomers();
+        if (Cars.size() == 0) {
             System.out.println("Nie posiadasz samochodów na sprzedaż.");
 
         } else System.out.println("Wybierz auto, które chcesz sprzedać: ");
@@ -265,17 +279,60 @@ public class Main {
                 return "Błędny wybór";
             }
             Car chosenCar = Cars.get(choice);
-            //todo
-            /*if (chosenCar.getValue() > autoHandel.getCash()) {
-                //return String.format("Nie masz tyle kasy. Trzeba %s a masz %s", chosenCar.getValue(), autoHandel.getCash());
+            System.out.println("Wybrałeś do sprzedaży: " + chosenCar);
+
+            System.out.println("Wybierz klienta: ");
+            for (int i = 0; i < potentialCustomers.getCustomers().size(); i++) {
+                System.out.println(i + 1 + ".\t" + potentialCustomers.getCustomers().get(i)); //listowanie potencjalnego klienta
             }
+
+
+
+            Scanner input = new Scanner(System.in);
+            String choice2 = input.nextLine();
+            try {
+                int number = Integer.parseInt(choice2);
+                System.out.println(number);
+            } catch (NumberFormatException e) {
+                System.out.println("Podaj liczbę z zakresu od 1 do " + potentialCustomers.getCustomers().size());
+
+                //System.out.println("Wybrałeś klienta: " + number);
+
+            }
+            //String choiceString2 = bufferedReader.readLine();
+            //int choice2 = Integer.parseInt(choiceString2);
+            //choice2--;
+            //if (0 > choice2 || choice2 > potentialCustomers.getCustomers().size()) {
+                //return "Błędny wybór";
+            //}
+            //Customer chosenCustomer = potentialCustomers.getCustomers().get((choice2));
+            //System.out.println("Wybrałeś klienta: " + chosenCustomer);
+
+            } catch (Exception e) {
+            e.printStackTrace(System.out);
+            return "";
+        }
+
+        //todo wybór kupującego, sprawdzenie czy ma kasę, czy odpowaida segment i marka 1 i 2 i czy akcetuje zespsuty samochód jeśli taki wybrałeś
+
+
+
+
+            /*if (chosenCar.getValue() > Customer.getBudget()) {
+                return String.format("Kupującego nie stać na ten samochód. Trzeba %s a ma %s", chosenCar.getValue(), Customer.getBudget());
+            }
+
             Cars.remove(chosenCar); //usuwanie kupionego samochodu z listy do kupienia
             autoHandel.setCash(autoHandel.getCash() - chosenCar.getValue()); //pomniejszenie dostępnej gotówki
             autoHandel.getCars().add(chosenCar); //dodanie samochodu do bazy samochodów Autohandlu
-            //todo Dodatkowo każdy samochód musisz umyć i zapłacić 2% podatku od wartości przy zakupie i przy sprzedaży.
 
 
-            //import new car in missing segment from german autohaus :)
+
+
+
+
+
+            /*import new car in missing segment from german autohaus :)
             switch (chosenCar.getSegment()) {
                 case "budget":
                     carsForSale.add(dealers.generateBudgetCar());
@@ -290,22 +347,13 @@ public class Main {
                     carsForSale.add(dealers.generateUtilityCar());
                     break;
             } */
-            return String.format("Wybrałeś do sprzedaży: " + Cars.get(choice));
-
-
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-            return "";
-        }
-
+        return String.format("Sprzedałeś samochód: "); //+ chosenCar + " klientowi " + chosenCustomer);
 
     }
 
 
 
-
-
-    //******************************************************
+        //******************************************************
 
     private static String readInput(BufferedReader bufferedReader) throws IOException {
 

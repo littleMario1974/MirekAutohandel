@@ -15,10 +15,10 @@ public class CustomerDb {
     private List<Customer> generateCustomers() {
         List<Customer> result = new ArrayList<>();
         List<String> names = List.of("Adamska", "Andrzejewski", "Baran", "Baranowski", "Bąk", "Błaszczyk", "Borkowski", "Brzeziński", "Chmielewski", "Cieślak", "Czarnecki", "Czerwiński", "Dąbrowski", "Duda", "Gajewska", "Głowacka", "Górecki", "Górski", "Jakubowski", "Jankowski", "Jasiński", "Jaworski", "Kaczmarczyk", "Kalinowski", "Kamiński", "Kaźmierczak", "Kołodziej", "Kowalczyk", "Kowalski", "Kozłowski", "Krajewska", "Krawczyk", "Krupa", "Kubiak", "Kucharski", "Kwiatkowski", "Laskowska", "Lewandowski", "Lis", "Maciejewski", "Makowski", "Malinowski", "Marciniak", "Mazur", "Mazurek", "Michalak", "Mróz", "Nowak", "Ostrowski", "Pawlak", "Pietrzak", "Piotrowski", "Przybylski", "Rutkowski", "Sadowska", "Sawicki", "Sikora", "Sikorska", "Sobczak", "Sokołowski", "Stępień", "Szczepański", "Szewczyk", "Szulc", "Szymański", "Szymczak", "Tomaszewski", "Urbańska", "Walczak", "Wasilewska", "Wiśniewski", "Witkowski", "Włodarczyk", "Wojciechowski", "Woźniak", "Wójcik", "Wróblewski", "Wysocki", "Zakrzewska", "Zalewski", "Zawadzki", "Zieliński", "Ziółkowska");
-        List<String> segments = List.of("budget", "standard", "premium");
+        List<String> segments = List.of("budget", "standard", "premium", "utility");
         List<String> brands = List.of("Audi", "Mercedes", "Fiat", "Porsche", "Volkswagen", "BMW", "Citroen", "Opel", "Peugeot", "Dacia", "Hyundai", "Mazda");
 
-            Random random = new Random();
+        Random random = new Random();
 
         //generate customers
         for (int i = 0; i < 7; i++) {

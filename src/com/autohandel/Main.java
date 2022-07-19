@@ -374,13 +374,16 @@ public class Main {
                 int newCustomers = random.nextInt(2, 10);
                 System.out.println("Wykupiłeś ogłoszenie w lokalnej gazecie. Masz " + newCustomers + " nowych klientów.");
                 // todo procedura dodania nowych klientów
+                // todo odjąć kasę z konta
 
 
             } else {
                 System.out.println("Wykupiłeś ogłoszenie w internecie. Masz 1 nowego klienta.");
                 // todo procedura dodania nowego klienta
-
+                // todo odjąć kasę z konta
             }
+            moves++;
+            // todo dodać wydatki na marketing
             return "";
         } catch (Exception e) {
             e.printStackTrace(System.out);

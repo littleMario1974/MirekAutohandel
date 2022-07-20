@@ -262,7 +262,7 @@ public class Main {
 
     private static String sellCar(AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
         List<Car> autoHandelCars = autoHandel.getCars();
-        List<Customer> Customers = potentialCustomers.getCustomers();
+        List<Customer> customers = potentialCustomers.getCustomers();
 
         if (autoHandelCars.size() == 0) {
             System.out.println("Nie posiadasz samochodów na sprzedaż.");
@@ -290,7 +290,7 @@ public class Main {
 
             System.out.println("Wybierz klienta: ");
             for (int i = 0; i < potentialCustomers.getCustomers().size(); i++) {
-                System.out.println(i + 1 + ".\t" + Customers.get(i)); //listowanie potencjalnego klienta
+                System.out.println(i + 1 + ".\t" + customers.get(i)); //listowanie potencjalnego klienta
             }
 
             Scanner input = new Scanner(System.in);
@@ -315,23 +315,23 @@ public class Main {
 
             boolean compatiblePreferences = true;
 
-            if (Customers.get(potentialCustomerNumber).getBudget() < chosenCar.value) {
+            if (customers.get(potentialCustomerNumber).getBudget() < chosenCar.value) {
                 System.out.println("Kupujący jest za biedny. :(");
                 compatiblePreferences = false;
 
             }
-            if (Customers.get(potentialCustomerNumber).getDesiredSegment() != chosenCar.getSegment()) {
+            if (customers.get(potentialCustomerNumber).getDesiredSegment() != chosenCar.getSegment()) {
                 System.out.println("Kupujący preferuje inny segment. :(");
                 compatiblePreferences = false;
 
             }
-            if ((Customers.get(potentialCustomerNumber).getDesiredBrand1() != chosenCar.getBrand()) && (Customers.get(potentialCustomerNumber).getDesiredBrand2() != chosenCar.getBrand())) {
+            if ((customers.get(potentialCustomerNumber).getDesiredBrand1() != chosenCar.getBrand()) && (customers.get(potentialCustomerNumber).getDesiredBrand2() != chosenCar.getBrand())) {
                 System.out.println("Kupujący preferuje inne marki. :(");
                 compatiblePreferences = false;
 
             }
             if (brokenCar) {
-                if (!Customers.get(potentialCustomerNumber).acceptsBroken)
+                if (!customers.get(potentialCustomerNumber).acceptsBroken)
                     System.out.println("Kupujący nie akceptuje zesputych samochodów !!!");
                 compatiblePreferences = false;
 
@@ -341,7 +341,7 @@ public class Main {
                 System.out.println("Gratulacje !!! Samochód sprzedany !");
                 autoHandelCars.remove(chosenCar); //usuwanie sprzedanego samochodu z listy AutoHandlu
                 autoHandel.setCash(autoHandel.getCash() + chosenCar.getValue());//powiększenie dostępnej gotówki o cenę samochodu
-                Customers.remove(potentialCustomerNumber); //usuwanie klienta, który kupił samochód
+                customers.remove(potentialCustomerNumber); //usuwanie klienta, który kupił samochód
                 moves++; // kolejny ruch po sprzedazy samochodu
                 transactionHistory.add("Sprzedaż   " + chosenCar); //dodanie do listy historii transakicji kupno/sprzedaż
             } //else System.out.println("Nie sprzedałeś samochodu.");
@@ -354,8 +354,10 @@ public class Main {
 
     }
 
-    private static String buyAd(AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
+    private static String buyAd(AutoHandel autoHandel, CustomerDb nextCustomers, BufferedReader bufferedReader) {
+        //List<Car> carsForSale = dealers.getCarsForSale();
 
+        List<Customer> customers = nextCustomers.getCustomers();
         System.out.println("1 . Ogłoszenie w lokalnej gazecie - 1000 zł.");
         System.out.println("2 . Ogłoszenie w internecie - 200 zł.");
         if (autoHandel.getCash() < 200) {
@@ -372,18 +374,24 @@ public class Main {
             if (choice == 0) {
                 Random random = new Random();
                 int newCustomers = random.nextInt(2, 10);
+
                 System.out.println("Wykupiłeś ogłoszenie w lokalnej gazecie. Masz " + newCustomers + " nowych klientów.");
-                // todo procedura dodania nowych klientów
-                // todo odjąć kasę z konta
+                // procedura dodania nowych klientów
 
-
+                for (int i = 0; i < newCustomers; i++) {
+                    customers.add(nextCustomers.generateCustomers().get(1));
+                }
+                autoHandel.setCash(autoHandel.getCash() - 1000);
             } else {
                 System.out.println("Wykupiłeś ogłoszenie w internecie. Masz 1 nowego klienta.");
-                // todo procedura dodania nowego klienta
-                // todo odjąć kasę z konta
+                customers.add(nextCustomers.generateCustomers().get(1));
+                autoHandel.setCash(autoHandel.getCash() - 200);
             }
             moves++;
-            // todo dodać wydatki na marketing
+            if (choice ==0) {
+                transactionHistory.add("Zakup reklamy w lokalnej gazecie:   1000 zł."); //dodanie do listy historii transakicji kupno/sprzedaż / reklama
+            }
+            else transactionHistory.add("Zakup reklamy w internecie:          200 zł."); //dodanie do listy historii transakicji kupno/sprzedaż / reklama
             return "";
         } catch (Exception e) {
             e.printStackTrace(System.out);

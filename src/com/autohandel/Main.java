@@ -1,7 +1,6 @@
 package com.autohandel;
 
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +10,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-
 
     static List<String> transactionHistory = new ArrayList<>(); //transakcje kupna /sprzedaży
     public static int moves; // zlicza ilość ruchów kupno, sprzedaż, naprawa, kupno reklamy
@@ -99,6 +97,10 @@ public class Main {
                                 System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 20 + marian.margin));
                                 System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 20 + adrian.margin));
                             }
+                        }
+                        if ((autohandel.getCars().size()) == 0) {
+                            System.out.println(" Nie masz żadnych samochodów");
+                            return;
                         }
                         System.out.println("Wskaż numer samochodu do naprawy:");
 
@@ -258,100 +260,162 @@ public class Main {
     }
 
 
-    //******************************************************
+
+
 
     private static String sellCar(AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
+
+           List<Car> autoHandelCars = autoHandel.getCars();
+           List<Customer> customers = potentialCustomers.getCustomers();
+
+           if (autoHandelCars.size() == 0) {
+               System.out.println("Nie posiadasz samochodów na sprzedaż.");
+
+           } else System.out.println("Wybierz auto, które chcesz sprzedać: ");
+           for (int i = 0; i < autoHandelCars.size(); i++) {
+               System.out.println(i + 1 + ".\t" + autoHandelCars.get(i));
+           }
+
+           try {
+               String choiceString = bufferedReader.readLine();
+               int choice = Integer.parseInt(choiceString);
+               choice--;
+               if (0 > choice || choice > autoHandelCars.size()) {
+                   return "Błędny wybór";
+               }
+               Car chosenCar = autoHandelCars.get(choice);
+               System.out.println("Wybrałeś do sprzedaży: " + chosenCar);
+
+
+               boolean brokenCar = false;
+               if (chosenCar.isBrakesBroken() || chosenCar.isSuspensionBroken() || chosenCar.isEngineBroken() || chosenCar.isBodyBroken() || chosenCar.isGearboxBroken()) {
+                   brokenCar = true; // jeśli któryś element zepsuty to true
+               }
+
+               System.out.println("Wybierz klienta: ");
+               for (int i = 0; i < potentialCustomers.getCustomers().size(); i++) {
+                   System.out.println(i + 1 + ".\t" + customers.get(i)); //listowanie potencjalnego klienta
+               }
+
+               Scanner input = new Scanner(System.in);
+               String choice2 = input.nextLine();
+               try {
+                   int number = Integer.parseInt(choice2);
+                   if (0 > number || number > potentialCustomers.getCustomers().size()) {
+                       return ("Podaj liczbe z zakresu od 1 do " + potentialCustomers.getCustomers().size());
+                   }
+                   System.out.println(number);
+               } catch (NumberFormatException e) {
+
+                   System.out.println("To nie jest liczba. Podaj liczbe z zakresu od 1 do " + potentialCustomers.getCustomers().size());
+
+
+               }
+               int potentialCustomerNumber = (Integer.parseInt(choice2) - 1); //parsowanie na liczbę minus jeden, bo od zera się zaczyna
+               System.out.println("Wybrałeś klienta nr: " + potentialCustomers.getCustomers().get(potentialCustomerNumber));
+
+
+               //sprawdzenie czy ma kasę, czy odpowaida segment i marka 1 i 2 i czy akcetuje zespsuty samochód jeśli taki wybrałeś
+
+               boolean compatiblePreferences = true;
+
+               if (customers.get(potentialCustomerNumber).getBudget() < chosenCar.value) {
+                   System.out.println("Kupujący jest za biedny. :(");
+                   compatiblePreferences = false;
+
+               }
+               if (customers.get(potentialCustomerNumber).getDesiredSegment() != chosenCar.getSegment()) {
+                   System.out.println("Kupujący preferuje inny segment. :(");
+                   compatiblePreferences = false;
+
+               }
+               if ((customers.get(potentialCustomerNumber).getDesiredBrand1() != chosenCar.getBrand()) && (customers.get(potentialCustomerNumber).getDesiredBrand2() != chosenCar.getBrand())) {
+                   System.out.println("Kupujący preferuje inne marki. :(");
+                   compatiblePreferences = false;
+
+               }
+               if (brokenCar) {
+                   if (!customers.get(potentialCustomerNumber).acceptsBroken)
+                       System.out.println("Kupujący nie akceptuje zesputych samochodów !!!");
+                   compatiblePreferences = false;
+
+               }
+               if (compatiblePreferences) {
+                   System.out.println("Preferencje :" + compatiblePreferences);
+                   System.out.println("Gratulacje !!! Sprzedałeś samochód o wartości " + chosenCar.getValue()); //+ " z marżą wynoszącą: " +chosenCar.getValue()* autoHandel.marge);
+                   autoHandelCars.remove(chosenCar); //usuwanie sprzedanego samochodu z listy AutoHandlu
+                   autoHandel.setCash(autoHandel.getCash() + (chosenCar.getValue() + chosenCar.getValue() * autoHandel.marge));//powiększenie dostępnej gotówki o cenę samochodu
+                   customers.remove(potentialCustomerNumber); //usuwanie klienta, który kupił samochód
+                   moves++; // kolejny ruch po sprzedazy samochodu
+                   transactionHistory.add("Sprzedaż   " + chosenCar); //dodanie do listy historii transakicji kupno/sprzedaż
+               } //else System.out.println("Nie sprzedałeś samochodu.");
+
+               return "Nie sprzedałeś samochodu.";
+
+           } catch (Exception e) {
+               e.printStackTrace(System.out);
+               return "";
+           }
+
+       }
+
+    private static String comparePreferences (AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
+
         List<Car> autoHandelCars = autoHandel.getCars();
         List<Customer> customers = potentialCustomers.getCustomers();
 
         if (autoHandelCars.size() == 0) {
             System.out.println("Nie posiadasz samochodów na sprzedaż.");
+        } else {
+            System.out.println("Spróbuję sparować klientów z pasującymi samochodami.");
 
-        } else System.out.println("Wybierz auto, które chcesz sprzedać: ");
-        for (int i = 0; i < autoHandelCars.size(); i++) {
-            System.out.println(i + 1 + ".\t" + autoHandelCars.get(i));
-        }
+            //boolean compatiblePreferences = true;
+            //boolean brokenCar = false;
 
-        try {
-            String choiceString = bufferedReader.readLine();
-            int choice = Integer.parseInt(choiceString);
-            choice--;
-            if (0 > choice || choice > autoHandelCars.size()) {
-                return "Błędny wybór";
-            }
-            Car chosenCar = autoHandelCars.get(choice);
-            System.out.println("Wybrałeś do sprzedaży: " + chosenCar);
+            for (int customer = 0; customer < potentialCustomers.getCustomers().size(); customer++) {
+
+                System.out.println();
+                System.out.println(customer + 1 + ".\t" + customers.get(customer));
+                System.out.println();
+                for (int car = 0; car < autoHandelCars.size(); car++) {
+                    System.out.println("\t" +(car + 1) + ".\t" +autoHandelCars.get(car));
+
+                    boolean brokenCar = false;
+                    boolean compatiblePreferences = true;
+                    //boolean brokenCar = false;
+                    if (autoHandelCars.get(car).isBrakesBroken() || autoHandelCars.get(car).isSuspensionBroken() || autoHandelCars.get(car).isEngineBroken() || autoHandelCars.get(car).isBodyBroken() || autoHandelCars.get(car).isGearboxBroken()) {
+                        brokenCar = true; // jeśli któryś element zepsuty to true
+
+                    }
+                    if (customers.get(customer).getBudget() < autoHandelCars.get(car).getValue()) {
+                        //System.out.println("\t\tKupujący jest za biedny. :(");
+                        compatiblePreferences = false;
+                    }
+                    if (customers.get(customer).getDesiredSegment() != autoHandelCars.get(car).getSegment()) {
+                        //System.out.println("\t\tKupujący preferuje inny segment. :(");
+                        compatiblePreferences = false;
+                    }
+                    if ((customers.get(customer).getDesiredBrand1() != autoHandelCars.get(car).getBrand()) && (customers.get(customer).getDesiredBrand2() != autoHandelCars.get(car).getBrand())) {
+                        //System.out.println("\t\tKupujący preferuje inne marki. :(");
+                        compatiblePreferences = false;
+                    }
+                    if (brokenCar == true) {
 
 
-            boolean brokenCar = false;
-            if (chosenCar.isBrakesBroken() || chosenCar.isSuspensionBroken() || chosenCar.isEngineBroken() || chosenCar.isBodyBroken() || chosenCar.isGearboxBroken()) {
-                brokenCar = true; // jeśli któryś element zepsuty to true
-            }
+                        if (!customers.get(customer).acceptsBroken)
+                            //System.out.println("\t\tKupujący nie akceptuje zesputych samochodów !!!");
+                            compatiblePreferences = false;
+                    }
 
-            System.out.println("Wybierz klienta: ");
-            for (int i = 0; i < potentialCustomers.getCustomers().size(); i++) {
-                System.out.println(i + 1 + ".\t" + customers.get(i)); //listowanie potencjalnego klienta
-            }
-
-            Scanner input = new Scanner(System.in);
-            String choice2 = input.nextLine();
-            try {
-                int number = Integer.parseInt(choice2);
-                if (0 > number || number > potentialCustomers.getCustomers().size()) {
-                    return ("Podaj liczbe z zakresu od 1 do " + potentialCustomers.getCustomers().size());
+                    if (compatiblePreferences == true) {
+                        System.out.println("\t\t*************************************** Ten samochód możesz sprzewdać w/w klientowi o nazwisku " + customers.get(customer).getName() + " ***************************************************");
+                        System.out.println();
+                    }
                 }
-                System.out.println(number);
-            } catch (NumberFormatException e) {
-
-                System.out.println("To nie jest liczba. Podaj liczbe z zakresu od 1 do " + potentialCustomers.getCustomers().size());
-
-
             }
-            int potentialCustomerNumber = (Integer.parseInt(choice2) - 1); //parsowanie na liczbę minus jeden, bo od zera się zaczyna
-            System.out.println("Wybrałeś klienta nr: " + potentialCustomers.getCustomers().get(potentialCustomerNumber));
-
-
-            //todo sprawdzenie czy ma kasę, czy odpowaida segment i marka 1 i 2 i czy akcetuje zespsuty samochód jeśli taki wybrałeś
-
-            boolean compatiblePreferences = true;
-
-            if (customers.get(potentialCustomerNumber).getBudget() < chosenCar.value) {
-                System.out.println("Kupujący jest za biedny. :(");
-                compatiblePreferences = false;
-
-            }
-            if (customers.get(potentialCustomerNumber).getDesiredSegment() != chosenCar.getSegment()) {
-                System.out.println("Kupujący preferuje inny segment. :(");
-                compatiblePreferences = false;
-
-            }
-            if ((customers.get(potentialCustomerNumber).getDesiredBrand1() != chosenCar.getBrand()) && (customers.get(potentialCustomerNumber).getDesiredBrand2() != chosenCar.getBrand())) {
-                System.out.println("Kupujący preferuje inne marki. :(");
-                compatiblePreferences = false;
-
-            }
-            if (brokenCar) {
-                if (!customers.get(potentialCustomerNumber).acceptsBroken)
-                    System.out.println("Kupujący nie akceptuje zesputych samochodów !!!");
-                compatiblePreferences = false;
-
-            }
-            if (compatiblePreferences) {
-                System.out.println("Preferencje :" + compatiblePreferences);
-                System.out.println("Gratulacje !!! Samochód sprzedany !");
-                autoHandelCars.remove(chosenCar); //usuwanie sprzedanego samochodu z listy AutoHandlu
-                autoHandel.setCash(autoHandel.getCash() + chosenCar.getValue());//powiększenie dostępnej gotówki o cenę samochodu
-                customers.remove(potentialCustomerNumber); //usuwanie klienta, który kupił samochód
-                moves++; // kolejny ruch po sprzedazy samochodu
-                transactionHistory.add("Sprzedaż   " + chosenCar); //dodanie do listy historii transakicji kupno/sprzedaż
-            } //else System.out.println("Nie sprzedałeś samochodu.");
-            return "Nie sprzedałeś samochodu.";
-
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-            return "";
         }
 
+        return "";
     }
 
     private static String buyAd(AutoHandel autoHandel, CustomerDb nextCustomers, BufferedReader bufferedReader) {
@@ -360,10 +424,20 @@ public class Main {
         List<Customer> customers = nextCustomers.getCustomers();
         System.out.println("1 . Ogłoszenie w lokalnej gazecie - 1000 zł.");
         System.out.println("2 . Ogłoszenie w internecie - 200 zł.");
+
+        //if (autoHandel.getCash() < 1000) {
+        //System.out.println("Stać cię tylko na reklamę w internecie. Masz tylko " + autoHandel.getCash() + " zł.");
+        //}
+
         if (autoHandel.getCash() < 200) {
             System.out.println("Nie stać cię na żadną reklamę. Masz " + autoHandel.getCash() + " zł, a potrzeba min. 200 zł.");
             return "";
         }
+
+        if (autoHandel.getCash() < 1000) {
+            System.out.println("Stać cię tylko na reklamę w internecie. Masz tylko " + autoHandel.getCash() + " zł.");
+        }
+
         try {
             String choiceString = bufferedReader.readLine();
             int choice = Integer.parseInt(choiceString);
@@ -371,9 +445,10 @@ public class Main {
             if (0 > choice || choice > 1) {
                 return "Błędny wybór";
             }
-            if (choice == 0) {
+            if ((choice == 0) && (autoHandel.getCash() >= 1000)) {
+
                 Random random = new Random();
-                int newCustomers = random.nextInt(2, 10);
+                int newCustomers = random.nextInt(2, 7);
 
                 System.out.println("Wykupiłeś ogłoszenie w lokalnej gazecie. Masz " + newCustomers + " nowych klientów.");
                 // procedura dodania nowych klientów
@@ -382,16 +457,17 @@ public class Main {
                     customers.add(nextCustomers.generateCustomers().get(1));
                 }
                 autoHandel.setCash(autoHandel.getCash() - 1000);
-            } else {
+            }
+            if (choice == 1) {
                 System.out.println("Wykupiłeś ogłoszenie w internecie. Masz 1 nowego klienta.");
                 customers.add(nextCustomers.generateCustomers().get(1));
                 autoHandel.setCash(autoHandel.getCash() - 200);
             }
             moves++;
-            if (choice ==0) {
+            if (choice == 0) {
                 transactionHistory.add("Zakup reklamy w lokalnej gazecie:   1000 zł."); //dodanie do listy historii transakicji kupno/sprzedaż / reklama
-            }
-            else transactionHistory.add("Zakup reklamy w internecie:          200 zł."); //dodanie do listy historii transakicji kupno/sprzedaż / reklama
+            } else
+                transactionHistory.add("Zakup reklamy w internecie:          200 zł."); //dodanie do listy historii transakicji kupno/sprzedaż / reklama
             return "";
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -399,8 +475,11 @@ public class Main {
         }
     }
 
+    public static void repairCar() {
 
-        //******************************************************
+    }
+
+    //******************************************************
 
     private static String readInput(BufferedReader bufferedReader) throws IOException {
 

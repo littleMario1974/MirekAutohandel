@@ -6,6 +6,7 @@ import java.util.List;
 public class AutoHandel {
     List<Car> cars;
     long cash;
+    double marge = 0.01; //marża 1% wartości pojazu przy sprzedaży
 
     public List<Car> getCars() {
         return cars;
@@ -16,11 +17,19 @@ public class AutoHandel {
     }
 
     public double getCash() {
-        return cash/100.0;
+        return cash / 100.0;
     }
 
     public void setCash(double cash) {
-        this.cash = Math.round(cash*100);
+        this.cash = Math.round(cash * 100);
+    }
+
+    public double getMarge() {
+        return marge;
+    }
+
+    public void setMarge(double marge) {
+        this.marge = marge;
     }
 
     public AutoHandel() {

@@ -98,10 +98,10 @@ public class Main {
                                 System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 20 + adrian.margin));
                             }
                         }
-                        if ((autohandel.getCars().size()) == 0) {
+                        /*if ((autohandel.getCars().size()) == 0) {
                             System.out.println(" Nie masz żadnych samochodów");
                             return;
-                        }
+                        } */
                         System.out.println("Wskaż numer samochodu do naprawy:");
 
                         try {

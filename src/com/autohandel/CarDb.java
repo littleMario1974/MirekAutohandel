@@ -7,17 +7,25 @@ import java.util.Random;
 public class CarDb {
     List<Car> carsForSale;
     Random random = new Random();
-    List<String> brands = List.of("Audi", "Mercedes", "Fiat", "Porsche", "Volkswagen", "BMW", "Citroen", "Opel", "Peugeot", "Dacia", "Hyundai", "Mazda");
+    private static List<String> brands = List.of("Audi", "Mercedes", "Fiat", "Porsche", "Volkswagen", "BMW", "Citroen", "Opel", "Peugeot", "Dacia", "Hyundai", "Mazda");
     List<String> colors = List.of("blue", "red", "green", "white", "yellow", "black", "brown", "pink");
 
     public CarDb() {
         this.carsForSale = generateCarsForSale();
     }
 
+    public static List<String> getBrands() {
+        return brands;
+    }
+
+    public static void setBrands(List<String> brands) {
+        CarDb.brands = brands;
+    }
+
     public Car generateBudgetCar() {
         return new Car(
                 random.nextLong(500, 2000),
-                brands.get(random.nextInt(brands.size())),
+                getBrands().get(random.nextInt(getBrands().size())),
                 random.nextLong(999000),
                 colors.get(random.nextInt(colors.size())),
                 "budget",
@@ -33,7 +41,7 @@ public class CarDb {
     public Car generateStandardCar() {
         return new Car(
                 random.nextLong(5000, 20000),
-                brands.get(random.nextInt(brands.size())),
+                getBrands().get(random.nextInt(getBrands().size())),
                 random.nextLong(799000),
                 colors.get(random.nextInt(colors.size())),
                 "standard",
@@ -49,7 +57,7 @@ public class CarDb {
     public Car generatePremiumCar() {
         return new Car(
                 random.nextLong(50000, 200000),
-                brands.get(random.nextInt(brands.size())),
+                getBrands().get(random.nextInt(getBrands().size())),
                 random.nextLong(399000),
                 colors.get(random.nextInt(colors.size())),
                 "premium",
@@ -65,7 +73,7 @@ public class CarDb {
     public Car generateUtilityCar() {
         return new Car(
                 random.nextLong(1000, 100000),
-                brands.get(random.nextInt(brands.size())),
+                getBrands().get(random.nextInt(getBrands().size())),
                 random.nextLong(8799000),
                 colors.get(random.nextInt(colors.size())),
                 "utility",

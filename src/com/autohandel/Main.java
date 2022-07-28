@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.Math.round;
+
 public class Main {
 
     static List<String> transactionHistory = new ArrayList<>(); //transakcje kupna /sprzedaży
@@ -45,7 +47,7 @@ public class Main {
                         break;
                     case "2":
                         System.out.println("Kup samochód");
-                        System.out.println(buyCar(autohandel, dealers, bufferedReader));
+                        System.out.println(buyCar(autohandel, dealers, potentialCustomers, bufferedReader));
 
                         break;
                     case "3":
@@ -57,122 +59,11 @@ public class Main {
                         break;
                     case "4":
                         System.out.println("Naprawa samochodów");
-
-                        // wylistowanie samochodów
-
-                        for (int i = 0; i < autohandel.getCars().size(); i++) {
-
-                            System.out.println(i + 1 + ".\t" + autohandel.getCars().get(i));
-                            if (!autohandel.getCars().get(i).brakesBroken && !autohandel.getCars().get(i).suspensionBroken && !autohandel.getCars().get(i).engineBroken && !autohandel.getCars().get(i).bodyBroken && !autohandel.getCars().get(i).gearboxBroken) {
-                                System.out.println(" - samochód sprawny");
-                            }
-
-                            if (autohandel.getCars().get(i).brakesBroken) {
-                                System.out.println("\tZepsute hamulce.");
-                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 80 + janusz.margin));
-                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 80 + marian.margin));
-                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 80 + adrian.margin));
-                            }
-                            if (autohandel.getCars().get(i).suspensionBroken) {
-                                System.out.println("\tZepsute zawieszenie.");
-                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 40 + janusz.margin));
-                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 40 + marian.margin));
-                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 40 + adrian.margin));
-                            }
-                            if (autohandel.getCars().get(i).engineBroken) {
-                                System.out.println("\tZepsuty silnik.");
-                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 30 + janusz.margin));
-                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 30 + marian.margin));
-                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 30 + adrian.margin));
-                            }
-                            if (autohandel.getCars().get(i).bodyBroken) {
-                                System.out.println("\tUszkodzona karoseria.");
-                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 50 + janusz.margin));
-                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 50 + marian.margin));
-                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 50 + adrian.margin));
-                            }
-                            if (autohandel.getCars().get(i).gearboxBroken) {
-                                System.out.println("\tZepsuta skrzynia biegów");
-                                System.out.println("\t\tNaprawa u Janusza to: " + (autohandel.getCars().get(i).value / 20 + janusz.margin));
-                                System.out.println("\t\tNaprawa u Mariana to: " + (autohandel.getCars().get(i).value / 20 + marian.margin));
-                                System.out.println("\t\tNaprawa u Adriana to: " + (autohandel.getCars().get(i).value / 20 + adrian.margin));
-                            }
-                        }
-                        /*if ((autohandel.getCars().size()) == 0) {
-                            System.out.println(" Nie masz żadnych samochodów");
-                            return;
-                        } */
-                        System.out.println("Wskaż numer samochodu do naprawy:");
-
-                        try {
-                            String choiceString = bufferedReader.readLine();
-                            int choice = Integer.parseInt(choiceString);
-                            choice--;
-
-                            if (choice + 1 > autohandel.getCars().size())
-                                System.out.println("Nie masz tylu samochodów.");
-
-                            else if (!autohandel.getCars().get(choice).brakesBroken && !autohandel.getCars().get(choice).suspensionBroken && !autohandel.getCars().get(choice).engineBroken && !autohandel.getCars().get(choice).bodyBroken && !autohandel.getCars().get(choice).gearboxBroken) {
-                                System.out.println("W samochodzie nr " + (choice + 1) + " nie ma nic do naprawy");
-                            } else {
-                                System.out.println("Wybrałeś samochód " + autohandel.getCars().get(choice));
-                                int x = 1;
-
-                                System.out.println("Do naprawy: ");
-                                if (autohandel.getCars().get(choice).brakesBroken) {
-
-                                    System.out.println("\t" + x + ". hamulce");
-                                    x++;
-                                }
-                                if (autohandel.getCars().get(choice).suspensionBroken) {
-                                    System.out.println("\t" + x + ". zawieszenie");
-                                    x++;
-                                }
-
-                                if (autohandel.getCars().get(choice).engineBroken) {
-                                    System.out.println("\t" + x + ". silnik");
-                                    x++;
-                                }
-                                if (autohandel.getCars().get(choice).bodyBroken) {
-                                    System.out.println("\t" + x + ". karoseria");
-                                    x++;
-                                }
-                                if (autohandel.getCars().get(choice).gearboxBroken) {
-                                    System.out.println("\t" + x + ". skrzynia biegów");
-                                }
-                                if (x > 2)
-                                    System.out.println("\tCo naprawiamy ? Podaj numer:"); // jeśli jest więcej niż jedna usterka
-                                // TODO: wybór elementu do naprawy
-
-
-                                Scanner input = new Scanner(System.in);
-                                String choice2 = input.nextLine();
-                                try {
-                                    int number = Integer.parseInt(choice2);
-                                    System.out.println("Wybrałeś numer " + (number));
-                                } catch (NumberFormatException e) {
-
-                                    //System.out.println("Podaj liczbę z zakresu od 1 do " + (x-1));
-
-                                    //System.out.println("Wybrałeś do naprawy element nr " + choice2);
-
-                                }
-
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace(System.out);
-                        }
-
-
-                        moves++;
+                        System.out.println(repairCar(autohandel, janusz, marian, adrian, bufferedReader));
                         break;
-
                     case "5":
                         System.out.println("Potencjalni klienci");
                         potentialCustomers.getCustomers().forEach(System.out::println);
-
-
                         break;
                     case "6":
                         System.out.println("Sprzedaż samochodu");
@@ -187,6 +78,7 @@ public class Main {
                     case "8":
                         System.out.println("Stan konta");
                         System.out.println("Masz na koncie " + autohandel.getCash() + " zł");
+                        System.out.println("Brakuje ci " + (100000 - autohandel.getCash()) + " zł do ukończenia gry.");
                         break;
                     case "9":
                         System.out.println("Historia transakcji " + "(ilość transakcji " + transactionHistory.size() + ")");
@@ -208,8 +100,9 @@ public class Main {
     }
 
 
-    public static String buyCar(AutoHandel autoHandel, CarDb dealers, BufferedReader bufferedReader) {
+    public static String buyCar(AutoHandel autoHandel, CarDb dealers, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
         List<Car> carsForSale = dealers.getCarsForSale();
+        List<Customer> customers = potentialCustomers.getCustomers();
         System.out.println("Wybierz auto do kupienia: ");
         for (int i = 0; i < carsForSale.size(); i++) {
             System.out.println(i + 1 + ".\t" + carsForSale.get(i));
@@ -228,6 +121,7 @@ public class Main {
             carsForSale.remove(chosenCar); //usuwanie kupionego samochodu z listy do kupienia
             autoHandel.setCash(autoHandel.getCash() - chosenCar.getValue()); //pomniejszenie dostępnej gotówki
             autoHandel.getCars().add(chosenCar); //dodanie samochodu do bazy samochodów Autohandlu
+
             moves++;
             System.out.println(moves);
             transactionHistory.add("Zakup   " + chosenCar); //dodanie do listy historii transakicji kupno/sprzedaż
@@ -250,8 +144,11 @@ public class Main {
                     carsForSale.add(dealers.generateUtilityCar());
                     break;
             }
-            return String.format("Kupiłeś %s za %s. Zostało Ci %s", chosenCar.getBrand(), chosenCar.getValue(), autoHandel.getCash());
-
+            System.out.println(String.format("Kupiłeś %s za %s. Zostało Ci %s", chosenCar.getBrand(), chosenCar.getValue(), autoHandel.getCash()));
+            // dodanie 2 nowych potencjalnych kupujących:
+            customers.add(potentialCustomers.generateCustomers().get(1));
+            customers.add(potentialCustomers.generateCustomers().get(2));
+            return ("Dodano dwóch nowych potencjalnych kupujących.");
 
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -260,132 +157,132 @@ public class Main {
     }
 
 
-
-
-
     private static String sellCar(AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
-
-           List<Car> autoHandelCars = autoHandel.getCars();
-           List<Customer> customers = potentialCustomers.getCustomers();
-
-           if (autoHandelCars.size() == 0) {
-               System.out.println("Nie posiadasz samochodów na sprzedaż.");
-
-           } else System.out.println("Wybierz auto, które chcesz sprzedać: ");
-           for (int i = 0; i < autoHandelCars.size(); i++) {
-               System.out.println(i + 1 + ".\t" + autoHandelCars.get(i));
-           }
-
-           try {
-               String choiceString = bufferedReader.readLine();
-               int choice = Integer.parseInt(choiceString);
-               choice--;
-               if (0 > choice || choice > autoHandelCars.size()) {
-                   return "Błędny wybór";
-               }
-               Car chosenCar = autoHandelCars.get(choice);
-               System.out.println("Wybrałeś do sprzedaży: " + chosenCar);
-
-
-               boolean brokenCar = false;
-               if (chosenCar.isBrakesBroken() || chosenCar.isSuspensionBroken() || chosenCar.isEngineBroken() || chosenCar.isBodyBroken() || chosenCar.isGearboxBroken()) {
-                   brokenCar = true; // jeśli któryś element zepsuty to true
-               }
-
-               System.out.println("Wybierz klienta: ");
-               for (int i = 0; i < potentialCustomers.getCustomers().size(); i++) {
-                   System.out.println((i + 1) + ".\t" + customers.get(i)); //listowanie potencjalnego klienta
-               }
-
-               Scanner input = new Scanner(System.in);
-               String choice2 = input.nextLine();
-               try {
-                   int number = Integer.parseInt(choice2);
-                   if (0 > number || number > potentialCustomers.getCustomers().size()) {
-                       return ("Podaj liczbę z zakresu od 1 do " + potentialCustomers.getCustomers().size());
-                   }
-                   //System.out.println(number);
-               } catch (NumberFormatException e) {
-
-                   System.out.println("To nie jest liczba. Podaj liczbę z zakresu od 1 do " + potentialCustomers.getCustomers().size());
-
-
-               }
-               int potentialCustomerNumber = (Integer.parseInt(choice2) - 1); //parsowanie na liczbę minus jeden, bo od zera się zaczyna
-               System.out.println("Wybrałeś klienta nr: " + (potentialCustomerNumber + 1) + ". " +customers.get(potentialCustomerNumber).name);
-
-
-               //sprawdzenie czy ma kasę, czy odpowaida segment i marka 1 i 2 i czy akcetuje zespsuty samochód jeśli taki wybrałeś
-
-               boolean compatiblePreferences = true;
-               System.out.println("Preferencje sprawdzanie czy true" + compatiblePreferences);
-               if (customers.get(potentialCustomerNumber).getBudget() < chosenCar.value + chosenCar.value* autoHandel.marge) {
-                   System.out.println("Kupujący jest za biedny. :(");
-                   compatiblePreferences = false;
-               }
-               if (customers.get(potentialCustomerNumber).getBudget() < chosenCar.value + chosenCar.value* autoHandel.marge) {
-                   System.out.println("Musisz doliczyć marżę " + autoHandel.marge *100 + "%");
-                   compatiblePreferences = false;
-               }
-               if (customers.get(potentialCustomerNumber).getDesiredSegment() != chosenCar.getSegment()) {
-                   System.out.println("Kupujący preferuje inny segment. :(");
-                   compatiblePreferences = false;
-
-               }
-               if ((customers.get(potentialCustomerNumber).getDesiredBrand1() != chosenCar.getBrand()) && (customers.get(potentialCustomerNumber).getDesiredBrand2() != chosenCar.getBrand())) {
-                   System.out.println("Kupujący preferuje inne marki. :(");
-                   compatiblePreferences = false;
-
-               }
-               if (brokenCar) {
-                   if (!customers.get(potentialCustomerNumber).acceptsBroken){
-                       System.out.println("Kupujący nie akceptuje zesputych samochodów !!!");
-                       compatiblePreferences = false;
-                   }
-
-               }
-               if (compatiblePreferences) {
-                   System.out.println("Preferencje :" + compatiblePreferences);
-                   System.out.println("Gratulacje !!! Zarobiłeś " + (chosenCar.getValue() + chosenCar.getValue() * autoHandel.marge) + ". (wartość samochodu: " + chosenCar.getValue() + ", marża 10% wartości: " + chosenCar.getValue() * autoHandel.marge + ")");
-                   transactionHistory.add("Sprzedaż   samochód: " + chosenCar.getBrand() + "za cenę: "+ chosenCar.getValue() + (chosenCar.getValue() * autoHandel.marge) + " klientowi: " +customers.get(potentialCustomerNumber).name ); //dodanie do listy historii transakicji kupno/sprzedaż
-                   autoHandelCars.remove(chosenCar); //usuwanie sprzedanego samochodu z listy AutoHandlu
-                   autoHandel.setCash(autoHandel.getCash() + (chosenCar.getValue() + chosenCar.getValue() * autoHandel.marge));//powiększenie dostępnej gotówki o cenę samochodu
-                   customers.remove(potentialCustomerNumber); //usuwanie klienta, który kupił samochód
-                   moves++; // kolejny ruch po sprzedazy samochodu
-
-               } else {
-
-                   System.out.println("sprawdzam co jest nie tak: " + compatiblePreferences);
-                   System.out.println("Nie sprzedałeś samochodu.");
-               }
-               System.out.println("Czy dopasować potencjalnych klientów do posiadanych samochodów ?   Wciśnij '1' na tak");
-               Scanner input1 = new Scanner(System.in);
-               String choice3 = input1.nextLine();
-               try {
-                   int number = Integer.parseInt(choice3);
-                   if (number ==1) {
-                       comparePreferences(autoHandel, potentialCustomers, bufferedReader);
-                   }
-                   System.out.println(number);
-               } catch (NumberFormatException e) {
-
-                   System.out.println("To nie jest liczba.");
-
-                }
-
-               return"";
-           } catch (Exception e) {
-               e.printStackTrace(System.out);
-               return "";
-           }
-
-       }
-
-    private static String comparePreferences (AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
 
         List<Car> autoHandelCars = autoHandel.getCars();
         List<Customer> customers = potentialCustomers.getCustomers();
-        int compatibleQuantity=0;
+
+        if (autoHandelCars.size() == 0) {
+            System.out.println("Nie posiadasz samochodów na sprzedaż.");
+
+        } else System.out.println("Wybierz auto, które chcesz sprzedać: ");
+        for (int i = 0; i < autoHandelCars.size(); i++) {
+            System.out.println(i + 1 + ".\t" + autoHandelCars.get(i));
+        }
+
+        try {
+            String choiceString = bufferedReader.readLine();
+            int choice = Integer.parseInt(choiceString);
+            choice--;
+            if (0 > choice || choice > autoHandelCars.size()) {
+                return "Błędny wybór";
+            }
+            Car chosenCar = autoHandelCars.get(choice);
+            System.out.println("Wybrałeś do sprzedaży: " + chosenCar);
+
+
+            boolean brokenCar = false;
+            if (chosenCar.isBrakesBroken() || chosenCar.isSuspensionBroken() || chosenCar.isEngineBroken() || chosenCar.isBodyBroken() || chosenCar.isGearboxBroken()) {
+                brokenCar = true; // jeśli któryś element zepsuty to true
+            }
+
+            System.out.println("Wybierz klienta: ");
+            for (int i = 0; i < potentialCustomers.getCustomers().size(); i++) {
+                System.out.println((i + 1) + ".\t" + customers.get(i)); //listowanie potencjalnego klienta
+            }
+
+            Scanner input = new Scanner(System.in);
+            String choice2 = input.nextLine();
+            try {
+                int number = Integer.parseInt(choice2);
+                if (0 > number || number > potentialCustomers.getCustomers().size()) {
+                    return ("Podaj liczbę z zakresu od 1 do " + potentialCustomers.getCustomers().size());
+                }
+                //System.out.println(number);
+            } catch (NumberFormatException e) {
+
+                System.out.println("To nie jest liczba. Podaj liczbę z zakresu od 1 do " + potentialCustomers.getCustomers().size());
+
+
+            }
+            int potentialCustomerNumber = (Integer.parseInt(choice2) - 1); //parsowanie na liczbę minus jeden, bo od zera się zaczyna
+            System.out.println("Wybrałeś klienta nr: " + (potentialCustomerNumber + 1) + ". " + customers.get(potentialCustomerNumber).name);
+
+
+            //sprawdzenie czy ma kasę, czy odpowaida segment i marka 1 i 2 i czy akcetuje zespsuty samochód jeśli taki wybrałeś
+
+            boolean compatiblePreferences = true;
+
+            if (customers.get(potentialCustomerNumber).getBudget() < chosenCar.value + chosenCar.value * autoHandel.marge) {
+                System.out.println("Kupujący jest za biedny. :(");
+                compatiblePreferences = false;
+            }
+            if (customers.get(potentialCustomerNumber).getBudget() < chosenCar.value + chosenCar.value * autoHandel.marge) {
+                System.out.println("Musisz doliczyć marżę " + autoHandel.marge * 100 + "%");
+                compatiblePreferences = false;
+            }
+            if (customers.get(potentialCustomerNumber).getDesiredSegment() != chosenCar.getSegment()) {
+                System.out.println("Kupujący preferuje inny segment. :(");
+                compatiblePreferences = false;
+
+            }
+            if ((customers.get(potentialCustomerNumber).getDesiredBrand1() != chosenCar.getBrand()) && (customers.get(potentialCustomerNumber).getDesiredBrand2() != chosenCar.getBrand())) {
+                System.out.println("Kupujący preferuje inne marki. :(");
+                compatiblePreferences = false;
+
+            }
+            if (brokenCar) {
+                if (!customers.get(potentialCustomerNumber).acceptsBroken) {
+                    System.out.println("Kupujący nie akceptuje zesputych samochodów !!!");
+                    compatiblePreferences = false;
+                }
+
+            }
+            if (compatiblePreferences) {
+                //System.out.println("Preferencje :" + compatiblePreferences);
+                System.out.println("Gratulacje !!! Zarobiłeś " + (chosenCar.getValue() + chosenCar.getValue() * autoHandel.marge) + " (wartość samochodu: " + chosenCar.getValue() + " + marża " + (autoHandel.marge * 100) + " % wartości samochodu: " + (round((chosenCar.getValue() * autoHandel.marge) * 100) / 100) + ")");
+                transactionHistory.add("Sprzedaż   samochód: " + chosenCar.getBrand() + " za cenę: " + (chosenCar.getValue() + chosenCar.getValue() * autoHandel.marge) + " klientowi: " + customers.get(potentialCustomerNumber).name); //dodanie do listy historii transakicji kupno/sprzedaż
+                autoHandelCars.remove(chosenCar); //usuwanie sprzedanego samochodu z listy AutoHandlu
+                autoHandel.setCash(autoHandel.getCash() + (chosenCar.getValue() + chosenCar.getValue() * autoHandel.marge));//powiększenie dostępnej gotówki o cenę samochodu
+                customers.remove(potentialCustomerNumber); //usuwanie klienta, który kupił samochód
+                // dodanie 2 nowych potencjalnych kupujących:
+                customers.add(potentialCustomers.generateCustomers().get(1));
+                customers.add(potentialCustomers.generateCustomers().get(2));
+                System.out.println("Dodano dwóch nowych potencjalnych kupujących.");
+
+            } else {
+
+                System.out.println("sprawdzam co jest nie tak: " + compatiblePreferences);
+                System.out.println("Nie sprzedałeś samochodu.");
+            }
+            System.out.println("Czy dopasować potencjalnych klientów do posiadanych samochodów ?   Wciśnij '1' na tak");
+            Scanner input1 = new Scanner(System.in);
+            String choice3 = input1.nextLine();
+            try {
+                int number = Integer.parseInt(choice3);
+                if (number == 1) {
+                    comparePreferences(autoHandel, potentialCustomers, bufferedReader);
+                }
+                System.out.println(number);
+            } catch (NumberFormatException e) {
+
+                System.out.println("To nie jest liczba.");
+
+            }
+
+            return "";
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+            return "";
+        }
+
+    }
+
+    private static String comparePreferences(AutoHandel autoHandel, CustomerDb potentialCustomers, BufferedReader bufferedReader) {
+
+        List<Car> autoHandelCars = autoHandel.getCars();
+        List<Customer> customers = potentialCustomers.getCustomers();
+        int compatibleQuantity = 0;
         if (autoHandelCars.size() == 0) {
             System.out.println("Nie posiadasz samochodów na sprzedaż.");
         } else {
@@ -398,7 +295,7 @@ public class Main {
                 System.out.println(customer + 1 + ".\t" + customers.get(customer));
                 System.out.println();
                 for (int car = 0; car < autoHandelCars.size(); car++) {
-                    System.out.println("\t" +(car + 1) + ".\t" +autoHandelCars.get(car));
+                    System.out.println("\t" + (car + 1) + ".\t" + autoHandelCars.get(car));
 
                     boolean brokenCar = false;
                     boolean compatiblePreferences = true;
@@ -436,7 +333,7 @@ public class Main {
                 }
             }
         }
-        System.out.println("Ilość skojarzonych klientów z samochodami: " +compatibleQuantity);
+        System.out.println("Ilość skojarzonych klientów z samochodami: " + compatibleQuantity);
 
         return "";
     }
@@ -465,7 +362,7 @@ public class Main {
             if (0 > choice || choice > 1) {
                 return "Błędny wybór";
             }
-            if ((choice == 0) && (autoHandel.getCash()<1000)){
+            if ((choice == 0) && (autoHandel.getCash() < 1000)) {
                 System.out.println("Przypominam - masz za mało pieniędzy na kupno reklamy w gazecie !!!");
             }
 
@@ -501,11 +398,198 @@ public class Main {
         }
     }
 
-    public static void repairCar() {
+    public static String repairCar(AutoHandel autohandel, Mechanic janusz, Mechanic marian, Mechanic adrian, BufferedReader bufferedReader) {
 
+        for (int i = 0; i < autohandel.getCars().size(); i++) {
+
+            int repairCost = 0; // przypisanie kosztu naprawy do marki z bazy danych
+            String chosenBrand;
+            // dobranie kosztu naprawy w zależności od marki (niemieckie, inne, pozostałe...)
+                chosenBrand = (autohandel.getCars().get(i).brand);
+                if (chosenBrand == "Porsche" || chosenBrand == "Mazda" || chosenBrand == "Hyundai") {
+                    repairCost = 400;
+                } else if (chosenBrand == "Audi" || chosenBrand == "Mercedes" || chosenBrand == "Volkswagen" || chosenBrand == "BMW" || chosenBrand == "Opel") {
+                    repairCost = 200;
+                } else {
+                    repairCost = 50;
+                }
+
+            System.out.println(i + 1 + ".\t" + autohandel.getCars().get(i));
+            if (!autohandel.getCars().get(i).brakesBroken && !autohandel.getCars().get(i).suspensionBroken && !autohandel.getCars().get(i).engineBroken && !autohandel.getCars().get(i).bodyBroken && !autohandel.getCars().get(i).gearboxBroken) {
+                System.out.println(" - samochód sprawny");
+            }
+
+            if (autohandel.getCars().get(i).brakesBroken) {
+                System.out.println("\tZepsute hamulce.");
+                System.out.println("\t\tNaprawa u Janusza to: " + (80 + janusz.margin + repairCost));
+                System.out.println("\t\tNaprawa u Mariana to: " + (80 + marian.margin + repairCost));
+                System.out.println("\t\tNaprawa u Adriana to: " + (80 + adrian.margin + repairCost));
+            }
+            if (autohandel.getCars().get(i).suspensionBroken) {
+                System.out.println("\tZepsute zawieszenie.");
+                System.out.println("\t\tNaprawa u Janusza to: " + (40 + janusz.margin + repairCost));
+                System.out.println("\t\tNaprawa u Mariana to: " + (40 + marian.margin + repairCost));
+                System.out.println("\t\tNaprawa u Adriana to: " + (40 + adrian.margin + repairCost));
+            }
+            if (autohandel.getCars().get(i).engineBroken) {
+                System.out.println("\tZepsuty silnik.");
+                System.out.println("\t\tNaprawa u Janusza to: " + (30 + janusz.margin + repairCost));
+                System.out.println("\t\tNaprawa u Mariana to: " + (30 + marian.margin + repairCost));
+                System.out.println("\t\tNaprawa u Adriana to: " + (30 + adrian.margin + repairCost));
+            }
+            if (autohandel.getCars().get(i).bodyBroken) {
+                System.out.println("\tUszkodzona karoseria.");
+                System.out.println("\t\tNaprawa u Janusza to: " + (50 + janusz.margin + repairCost));
+                System.out.println("\t\tNaprawa u Mariana to: " + (50 + marian.margin + repairCost));
+                System.out.println("\t\tNaprawa u Adriana to: " + (50 + adrian.margin + repairCost));
+            }
+            if (autohandel.getCars().get(i).gearboxBroken) {
+                System.out.println("\tZepsuta skrzynia biegów");
+                System.out.println("\t\tNaprawa u Janusza to: " + (20 + janusz.margin + repairCost));
+                System.out.println("\t\tNaprawa u Mariana to: " + (20 + marian.margin + repairCost));
+                System.out.println("\t\tNaprawa u Adriana to: " + (20 + adrian.margin + repairCost));
+            }
+        }
+
+        System.out.println("Wskaż numer samochodu do naprawy:");
+
+        try {
+            String choiceString = bufferedReader.readLine();
+            int choice = Integer.parseInt(choiceString);
+            choice--;
+
+            if (choice + 1 > autohandel.getCars().size())
+                System.out.println("Nie masz tylu samochodów.");
+
+            else if (!autohandel.getCars().get(choice).brakesBroken && !autohandel.getCars().get(choice).suspensionBroken && !autohandel.getCars().get(choice).engineBroken && !autohandel.getCars().get(choice).bodyBroken && !autohandel.getCars().get(choice).gearboxBroken) {
+                System.out.println("W samochodzie nr " + (choice + 1) + " nie ma nic do naprawy");
+                System.out.println(autohandel.getCars().get(choice));
+            } else {
+                //public static String repairCostFactor(CarDb.brands())
+                List<String> brokenElements = new ArrayList<>(); //lista zepsutych elementów w danym samochodzie
+
+                Car chosenCar = autohandel.getCars().get(choice);
+                System.out.println("Wybrałeś samochód " + chosenCar);
+                int x = 0;
+
+
+                System.out.println("Do naprawy: ");
+                if (autohandel.getCars().get(choice).brakesBroken) {
+                    x++;
+                    brokenElements.add("hamulce");
+
+                }
+                if (autohandel.getCars().get(choice).suspensionBroken) {
+                    x++;
+                    brokenElements.add("zawieszenie");
+
+                }
+
+                if (autohandel.getCars().get(choice).engineBroken) {
+                    x++;
+                    brokenElements.add("silnik");
+
+                }
+                if (autohandel.getCars().get(choice).bodyBroken) {
+                    x++;
+                    brokenElements.add("karoseria");
+                    //System.out.println("\t" + x + " " + "karoseria");
+
+                }
+                if (autohandel.getCars().get(choice).gearboxBroken) {
+                    x++;
+                    brokenElements.add("skrzynia biegów");
+                    //System.out.println("\t" + x + " " +"skrzynia biegów");
+
+                }
+                for (int i = 0; i < brokenElements.size(); i++) {
+                    System.out.println(i + 1 + ".\t" + brokenElements.get(i)); // wypisanie uszkodzonych elementów danego samochodu
+                }
+
+
+                if (x > 1) {
+                    System.out.println("\tCo naprawiamy ? Podaj numer:"); // jeśli jest więcej niż jedna usterka
+                    // TODO: wybór elementu do naprawy
+
+
+                    Scanner input = new Scanner(System.in);
+                    String choice2 = input.nextLine();
+
+                    int number = 0;
+                    try {
+                        number = Integer.parseInt(choice2);
+
+                        if (number > x) {
+                            System.out.println("Wybierz numer od 1 do " + x);
+                        } else {
+                            System.out.println("Wybrałeś do naprawy element: " + brokenElements.get(number - 1));
+                            String brokenElement = brokenElements.get(number - 1); //przypisanie wybranego elementu do zmiennej
+                        }
+
+                    } catch (NumberFormatException e) {
+                    }
+                    System.out.println("Wybierz mechanika");
+
+                    System.out.println("1. Janusz");
+                    System.out.println("2. Marian");
+                    System.out.println("3. Adrian");
+
+
+                    Scanner input2 = new Scanner(System.in);
+                    String choice3 = input.nextLine();
+                    try {
+                        int number2 = Integer.parseInt(choice3);
+                        if (0 > number2 || number2 > 3) {
+                            return ("Podaj liczbę z zakresu od 1 do 3");
+                        }
+                        String selectedMechanic = null;
+                        switch (number2) {
+                            case 1:
+                                selectedMechanic = janusz.getName();
+                                break;
+                            case 2:
+                                selectedMechanic = marian.getName();
+                                break;
+                            case 3:
+                                selectedMechanic = adrian.getName();
+                                break;
+
+                        }
+
+                        System.out.println(selectedMechanic);
+
+                        if (selectedMechanic == "Janusz") {
+                            // todo sprawdź czy masz tyle pieniędzy
+                            //  jeśli tak -  skasuj za naprawę marża w zł + % od wartości pojazu
+                            //double repairCost; // koszt naprawy dla janusza
+                            //repairCost =
+
+
+                        }
+
+                    } catch (NumberFormatException e) {
+
+                        System.out.println("To nie jest liczba. Podaj liczbę z zakresu od 1 do 3");
+
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+
+
+        //moves++;
+        return "";
     }
 
-    //******************************************************
 
     private static String readInput(BufferedReader bufferedReader) throws IOException {
 

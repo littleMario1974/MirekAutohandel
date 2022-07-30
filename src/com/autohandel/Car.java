@@ -11,6 +11,7 @@ public class Car {
     String segment;
     long capacity;
 
+
     //maintainable
     boolean brakes;
     boolean suspension;
